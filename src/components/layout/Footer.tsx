@@ -31,35 +31,34 @@ const socialLinks = [
 
 const Footer = () => {
   return (
-    <footer className="relative bg-transparent pt-24 pb-12 px-6 lg:px-12 border-t border-white/5">
+    <footer className="relative bg-transparent pt-16 md:pt-24 pb-12 px-6 lg:px-12 border-t border-white/5">
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-16 mb-24">
           {/* Brand & Newsletter */}
-          <div className="lg:col-span-3">
-            <a href="#" className="inline-block mb-8">
-              <span className="text-3xl font-display font-bold gradient-text tracking-tighter">DWX</span>
-              <span className="text-xs text-muted-foreground ml-2 uppercase tracking-widest font-bold">Systems</span>
+          <div className="lg:col-span-3 text-center lg:text-left">
+            <a href="#" className="inline-block mb-8 mx-auto lg:mx-0">
+              <span className="text-2xl sm:text-3xl font-display font-bold gradient-text tracking-tighter">DWX</span>
+              <span className="text-[10px] text-muted-foreground ml-2 uppercase tracking-widest font-bold">Systems</span>
             </a>
-            <p className="text-lg text-muted-foreground max-w-md mb-10 font-light leading-relaxed">
+            <p className="text-base sm:text-lg text-muted-foreground max-w-md mb-10 font-light leading-relaxed mx-auto lg:mx-0">
               We engineer digital dominance for the world's most ambitious brands.
               Join our network for exclusive insights into the future of the web.
             </p>
 
-            <div className="relative max-w-md">
+            <div className="relative max-w-md mx-auto lg:mx-0">
               <input
                 type="email"
-                placeholder="Secure email address"
-                className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:border-primary/50 transition-all placeholder:text-muted-foreground/30 font-light"
+                placeholder="Email address"
+                className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:border-primary/50 transition-all placeholder:text-muted-foreground/30 font-light pr-16 sm:pr-40"
               />
-              <button className="absolute right-2 top-2 bottom-2 px-6 rounded-xl bg-primary text-primary-foreground font-bold text-xs uppercase tracking-widest hover:brightness-110 transition-all flex items-center gap-2">
-                Subscribe <Send className="w-3 h-3" />
+              <button className="absolute right-2 top-2 bottom-2 px-3 sm:px-6 rounded-xl bg-primary text-primary-foreground font-bold text-[10px] sm:text-xs uppercase tracking-widest hover:brightness-110 transition-all flex items-center gap-2">
+                <span className="hidden sm:inline">Subscribe</span> <Send className="w-3 h-3" />
               </button>
             </div>
           </div>
 
-          {/* Links */}
-          <div className="lg:col-span-1">
-            <h4 className="text-xs font-bold uppercase tracking-[0.3em] text-white underline decoration-primary decoration-2 underline-offset-8 mb-8">Services</h4>
+          <div className="lg:col-span-1 text-center lg:text-left">
+            <h4 className="text-xs font-bold uppercase tracking-[0.3em] text-white underline decoration-primary decoration-2 underline-offset-8 mb-8 inline-block lg:block">Services</h4>
             <ul className="space-y-4">
               {footerLinks.services.map((link) => (
                 <li key={link.label}>
@@ -71,8 +70,8 @@ const Footer = () => {
             </ul>
           </div>
 
-          <div className="lg:col-span-1">
-            <h4 className="text-xs font-bold uppercase tracking-[0.3em] text-white underline decoration-secondary decoration-2 underline-offset-8 mb-8">Ecosystem</h4>
+          <div className="lg:col-span-1 text-center lg:text-left">
+            <h4 className="text-xs font-bold uppercase tracking-[0.3em] text-white underline decoration-secondary decoration-2 underline-offset-8 mb-8 inline-block lg:block">Ecosystem</h4>
             <ul className="space-y-4">
               {footerLinks.ecosystem.map((link) => (
                 <li key={link.label}>
@@ -84,8 +83,8 @@ const Footer = () => {
             </ul>
           </div>
 
-          <div className="lg:col-span-1">
-            <h4 className="text-xs font-bold uppercase tracking-[0.3em] text-white underline decoration-accent decoration-2 underline-offset-8 mb-8">Resources</h4>
+          <div className="lg:col-span-1 text-center lg:text-left">
+            <h4 className="text-xs font-bold uppercase tracking-[0.3em] text-white underline decoration-accent decoration-2 underline-offset-8 mb-8 inline-block lg:block">Resources</h4>
             <ul className="space-y-4">
               {footerLinks.support.map((link) => (
                 <li key={link.label}>
@@ -100,8 +99,8 @@ const Footer = () => {
 
         {/* Bottom Bar */}
         <div className="flex flex-col md:flex-row justify-between items-center gap-8 pt-12 border-t border-white/5">
-          <div className="flex items-center gap-10">
-            <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-[0.2em]">
+          <div className="flex items-center gap-10 text-center md:text-left">
+            <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-[0.2em] max-w-xs md:max-w-none">
               © {new Date().getFullYear()} DWX — Architectural Digital Experiences
             </p>
           </div>

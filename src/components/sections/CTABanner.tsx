@@ -12,14 +12,14 @@ const CTABanner = () => {
 
       <div className="container-custom relative z-10">
         <motion.div
-          className="relative glass-strong p-12 md:p-24 lg:p-32 rounded-[3rem] text-center overflow-hidden border-white/10"
+          className="relative glass-strong p-8 sm:p-12 md:p-24 lg:p-32 rounded-[2rem] md:rounded-[3rem] text-center overflow-hidden border-white/10"
           initial={{ opacity: 0, scale: 0.9 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
         >
           {/* Animated Gradient Border */}
-          <div className="absolute inset-0 p-px bg-gradient-to-r from-transparent via-primary/50 to-transparent rounded-[3rem] pointer-events-none" />
+          <div className="absolute inset-0 p-px bg-gradient-to-r from-transparent via-primary/50 to-transparent rounded-[2rem] md:rounded-[3rem] pointer-events-none" />
 
           {/* Internal Orbs */}
           <motion.div
@@ -47,14 +47,14 @@ const CTABanner = () => {
               transition={{ delay: 0.2, duration: 0.8 }}
             >
               <span className="text-secondary font-bold tracking-[0.4em] uppercase text-xs mb-8 block">Project Inquiry</span>
-              <h2 className="text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-display font-bold mb-10 tracking-tighter leading-[0.85]">
+              <h2 className="text-4xl sm:text-7xl md:text-8xl lg:text-9xl font-display font-bold mb-10 tracking-tighter leading-[0.85]">
                 Let's Build <br />
                 <span className="gradient-text">The Future.</span>
               </h2>
             </motion.div>
 
             <motion.p
-              className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto mb-16 font-light leading-relaxed"
+              className="text-lg md:text-2xl text-muted-foreground max-w-3xl mx-auto mb-16 font-light leading-relaxed"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -70,10 +70,10 @@ const CTABanner = () => {
               viewport={{ once: true }}
               transition={{ delay: 0.6, duration: 0.8 }}
             >
-              <GlowButton variant="primary" className="px-12 py-6 text-xl rounded-full group">
+              <GlowButton variant="primary" className="px-10 md:px-12 py-5 md:py-6 text-lg md:text-xl rounded-full group">
                 Establish Contact <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-2 transition-transform" />
               </GlowButton>
-              <GlowButton variant="outline" className="px-12 py-6 text-xl rounded-full border-white/10 hover:border-white/20">
+              <GlowButton variant="outline" className="px-10 md:px-12 py-5 md:py-6 text-lg md:text-xl rounded-full border-white/10 hover:border-white/20">
                 Book Agency Call
               </GlowButton>
             </motion.div>

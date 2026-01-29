@@ -90,7 +90,7 @@ const Services = () => {
 
         {/* Services grid */}
         <motion.div
-          className="grid md:grid-cols-3 gap-8 lg:gap-10"
+          className="grid md:grid-cols-3 gap-6 lg:gap-10"
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
@@ -99,7 +99,7 @@ const Services = () => {
           {services.map((service, index) => (
             <motion.div
               key={index}
-              className={`group relative glass p-10 transition-all duration-700 ${service.glowColor} border-white/5 hover:border-white/10`}
+              className={`group relative glass p-8 sm:p-10 transition-all duration-700 ${service.glowColor} border-white/5 hover:border-white/10`}
               variants={cardVariants}
               whileHover={{ y: -12, transition: { duration: 0.4, ease: [0.16, 1, 0.3, 1] } }}
             >

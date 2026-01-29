@@ -35,26 +35,27 @@ const About = () => {
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-[radial-gradient(circle_at_center,rgba(59,130,246,0.05)_0%,transparent_70%)] pointer-events-none" />
 
       <div className="container-custom relative z-10">
-        <div className="grid lg:grid-cols-2 gap-20 items-center">
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           {/* Text Content */}
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+            className="px-0 sm:px-4 text-center lg:text-left"
           >
-            <span className="text-primary font-bold tracking-[0.3em] uppercase text-xs mb-6 block">Legacy & Mission</span>
-            <h2 className="text-5xl md:text-7xl font-display font-bold mb-8 tracking-tighter leading-tight">
+            <span className="text-primary font-bold tracking-[0.3em] uppercase text-xs mb-6 block mx-auto lg:mx-0">Legacy & Mission</span>
+            <h2 className="text-3xl sm:text-5xl md:text-7xl font-display font-bold mb-8 tracking-tighter leading-tight text-balance mx-auto lg:mx-0">
               Why <span className="gradient-text">Brands Trust</span> DWX
             </h2>
-            <p className="text-xl text-muted-foreground font-light leading-relaxed mb-10 max-w-xl">
+            <p className="text-base sm:text-xl text-muted-foreground font-light leading-relaxed mb-10 max-w-xl mx-auto lg:mx-0">
               DWX Agency was built on the intersection of technical excellence and cinematic aesthetics.
               We don't settle for "good enough"—we push until the experience is unforgettable.
             </p>
 
-            <div className="grid sm:grid-cols-2 gap-8">
+            <div className="grid sm:grid-cols-2 gap-8 text-center sm:text-left">
               {reasons.map((item, idx) => (
-                <div key={idx} className="space-y-4 group">
+                <div key={idx} className="flex flex-col items-center sm:items-start space-y-4 group">
                   <div className={`w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center ${item.color} group-hover:scale-110 transition-transform duration-500`}>
                     <item.icon className="w-6 h-6" />
                   </div>
@@ -82,14 +83,14 @@ const About = () => {
               />
               <div className="absolute inset-0 bg-black/40" />
 
-              <div className="absolute inset-x-0 bottom-0 p-12 bg-gradient-to-t from-black to-transparent">
-                <div className="flex gap-10">
+              <div className="absolute inset-x-0 bottom-0 p-6 sm:p-12 bg-gradient-to-t from-black to-transparent">
+                <div className="flex gap-6 sm:gap-10">
                   <div>
-                    <div className="text-4xl font-display font-bold text-white mb-1">98%</div>
+                    <div className="text-3xl sm:text-4xl font-display font-bold text-white mb-1">98%</div>
                     <div className="text-[10px] uppercase tracking-widest text-primary font-bold">Client Success</div>
                   </div>
                   <div>
-                    <div className="text-4xl font-display font-bold text-white mb-1">150+</div>
+                    <div className="text-3xl sm:text-4xl font-display font-bold text-white mb-1">150+</div>
                     <div className="text-[10px] uppercase tracking-widest text-secondary font-bold">Global Projects</div>
                   </div>
                 </div>

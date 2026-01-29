@@ -48,7 +48,7 @@ const Pricing = () => {
                     {plans.map((plan, idx) => (
                         <motion.div
                             key={plan.name}
-                            className={`relative glass p-10 flex flex-col h-full border-white/5 transition-all duration-500 overflow-hidden group ${plan.isPopular ? 'border-primary/30 ring-1 ring-primary/20' : 'hover:border-white/10'
+                            className={`relative glass p-8 md:p-10 flex flex-col h-full border-white/5 transition-all duration-500 overflow-hidden group ${plan.isPopular ? 'border-primary/30 ring-1 ring-primary/20' : 'hover:border-white/10'
                                 }`}
                             initial={{ opacity: 0, y: 40 }}
                             whileInView={{ opacity: 1, y: 0 }}

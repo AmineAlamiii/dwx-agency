@@ -52,7 +52,7 @@ const FAQ = () => {
                     whileInView={{ opacity: 1, scale: 1 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.8 }}
-                    className="glass p-8 rounded-3xl border-white/5 bg-white/[0.02]"
+                    className="glass p-6 sm:p-8 rounded-3xl border-white/5 bg-white/[0.02]"
                 >
                     <Accordion type="single" collapsible className="w-full">
                         {faqs.map((faq, index) => (

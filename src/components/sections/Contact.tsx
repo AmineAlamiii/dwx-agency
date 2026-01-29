@@ -6,56 +6,57 @@ const Contact = () => {
   return (
     <section id="contact" className="py-20 md:py-40 relative bg-transparent">
       <div className="container-custom relative z-10">
-        <div className="grid lg:grid-cols-2 gap-24">
+        <div className="grid lg:grid-cols-2 gap-16 lg:gap-24">
           {/* Information Side */}
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+            className="text-center lg:text-left"
           >
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass mb-8 border border-primary/20">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass mb-8 border border-primary/20 mx-auto lg:mx-0">
               <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
               <span className="text-sm font-bold tracking-widest uppercase text-primary">Establish Contact</span>
             </div>
 
-            <h2 className="text-5xl md:text-8xl font-display font-bold mb-10 tracking-tighter leading-[0.9]">
+            <h2 className="text-4xl sm:text-5xl md:text-8xl font-display font-bold mb-10 tracking-tighter leading-[0.9] text-balance">
               Let's craft <br />
               <span className="gradient-text">the future</span>
             </h2>
 
-            <p className="text-xl text-muted-foreground font-light leading-relaxed mb-16 max-w-md">
+            <p className="text-base sm:text-xl text-muted-foreground font-light leading-relaxed mb-12 md:mb-16 max-w-md mx-auto lg:mx-0">
               Whether you have a fully formed idea or just a spark of inspiration, we're here to ignite the digital fire.
             </p>
 
-            <div className="space-y-10">
-              <div className="flex items-start gap-6 group">
+            <div className="space-y-10 flex flex-col items-center lg:items-start">
+              <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6 group text-center sm:text-left">
                 <div className="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center transition-all duration-500 group-hover:border-primary/50 group-hover:bg-primary/5">
                   <Mail className="w-6 h-6 text-primary" />
                 </div>
                 <div>
                   <h4 className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-2">Direct Mail</h4>
-                  <p className="text-2xl font-display font-bold group-hover:text-primary transition-colors cursor-pointer tracking-tight">hello@dwx.agency</p>
+                  <p className="text-xl sm:text-2xl font-display font-bold group-hover:text-primary transition-colors cursor-pointer tracking-tight">hello@dwx.agency</p>
                 </div>
               </div>
 
-              <div className="flex items-start gap-6 group">
+              <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6 group text-center sm:text-left">
                 <div className="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center transition-all duration-500 group-hover:border-secondary/50 group-hover:bg-secondary/5">
                   <Phone className="w-6 h-6 text-secondary" />
                 </div>
                 <div>
                   <h4 className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-2">Voice Consultation</h4>
-                  <p className="text-2xl font-display font-bold group-hover:text-secondary transition-colors cursor-pointer tracking-tight">+1 (555) 0123 4567</p>
+                  <p className="text-xl sm:text-2xl font-display font-bold group-hover:text-secondary transition-colors cursor-pointer tracking-tight">+1 (555) 0123 4567</p>
                 </div>
               </div>
 
-              <div className="flex items-start gap-6 group">
+              <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6 group text-center sm:text-left">
                 <div className="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center transition-all duration-500 group-hover:border-accent/50 group-hover:bg-accent/5">
                   <MapPin className="w-6 h-6 text-accent" />
                 </div>
                 <div>
                   <h4 className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-2">HQ Location</h4>
-                  <p className="text-2xl font-display font-bold group-hover:text-accent transition-colors tracking-tight">Silicon Valley, CA</p>
+                  <p className="text-xl sm:text-2xl font-display font-bold group-hover:text-accent transition-colors tracking-tight">Silicon Valley, CA</p>
                 </div>
               </div>
             </div>
@@ -71,7 +72,7 @@ const Contact = () => {
           >
             <div className="absolute inset-0 bg-primary/5 blur-[100px] rounded-full" />
 
-            <form className="relative glass-strong p-10 md:p-16 rounded-[3rem] border-white/10 border space-y-8">
+            <form className="relative glass-strong p-8 md:p-16 rounded-[2rem] md:rounded-[3rem] border-white/10 border space-y-8">
               <div className="space-y-2">
                 <label className="text-[10px] font-bold uppercase tracking-[0.3em] text-primary ml-1">Full Identity</label>
                 <input
@@ -99,7 +100,7 @@ const Contact = () => {
                 />
               </div>
 
-              <GlowButton variant="primary" className="w-full py-6 text-xl rounded-2xl group flex items-center justify-center gap-3">
+              <GlowButton variant="primary" className="w-full py-5 md:py-6 text-lg md:text-xl rounded-2xl group flex items-center justify-center gap-3">
                 Initialize Transmission <MessageSquare className="w-5 h-5 group-hover:scale-125 transition-transform" />
               </GlowButton>
             </form>

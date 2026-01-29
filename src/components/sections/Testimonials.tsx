@@ -58,7 +58,7 @@ const Testimonials = () => {
                     {testimonials.map((t, idx) => (
                         <motion.div
                             key={idx}
-                            className="glass p-8 relative flex flex-col justify-between group border-white/5 hover:border-blue-500/30 transition-all duration-500"
+                            className="glass p-6 sm:p-8 relative flex flex-col justify-between group border-white/5 hover:border-blue-500/30 transition-all duration-500"
                             initial={{ opacity: 0, scale: 0.9 }}
                             whileInView={{ opacity: 1, scale: 1 }}
                             viewport={{ once: true }}

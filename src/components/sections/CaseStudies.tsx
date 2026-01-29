@@ -70,6 +70,35 @@ const projects: Project[] = [
   },
 ];
 
+const ProjectCard = ({ project, onClick }: { project: Project, onClick?: () => void }) => (
+  <motion.div
+    className="relative flex-shrink-0 w-full md:w-[600px] lg:w-[800px] group cursor-pointer"
+    whileHover={{ scale: 0.98 }}
+    transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+    onClick={onClick}
+  >
+    <div className="relative aspect-[16/10] overflow-hidden rounded-[2rem] border border-white/5">
+      <motion.img
+        src={project.image}
+        alt={project.title}
+        className="w-full h-full object-cover grayscale-[0.5] group-hover:grayscale-0 transition-all duration-1000 group-hover:scale-110"
+      />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60 group-hover:opacity-40 transition-opacity duration-700" />
+
+      <div className="absolute bottom-6 left-6 right-6 md:bottom-10 md:left-10 md:right-10 flex justify-between items-end transform md:translate-y-4 md:opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-700">
+        <div className="max-w-md">
+          <Badge className="bg-white/10 backdrop-blur-md text-white border-white/10 mb-2 md:mb-4">{project.category}</Badge>
+          <h3 className="text-2xl md:text-5xl font-display font-bold text-white mb-1 md:mb-2">{project.title}</h3>
+          <p className="text-white/70 text-sm md:text-lg font-light leading-snug hidden md:block">{project.description}</p>
+        </div>
+        <div className="w-12 h-12 md:w-20 md:h-20 rounded-full bg-white flex items-center justify-center text-black shadow-2xl">
+          <Plus className="w-5 h-5 md:w-8 md:h-8" />
+        </div>
+      </div>
+    </div>
+  </motion.div>
+);
+
 const CaseStudies = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
@@ -90,7 +119,7 @@ const CaseStudies = () => {
           viewport={{ once: true }}
           transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
         >
-          <div className="max-w-2xl">
+          <div className="max-w-2xl text-center md:text-left mx-auto md:mx-0">
             <motion.span
               className="inline-block text-blue-500 font-bold tracking-[0.3em] uppercase text-xs mb-6"
               initial={{ opacity: 0, x: -20 }}
@@ -104,7 +133,7 @@ const CaseStudies = () => {
               <span className="gradient-text">Projects</span>
             </h2>
           </div>
-          <div className="flex flex-col gap-4 items-start">
+          <div className="flex flex-col gap-4 items-center md:items-start text-center md:text-left">
             <p className="text-muted-foreground text-lg max-w-sm font-light">
               A curated selection of digital products that redefine industry standards.
             </p>
@@ -122,55 +151,47 @@ const CaseStudies = () => {
       </div>
 
       <div className="relative">
-        <motion.div
-          className="flex gap-10 cursor-grab active:cursor-grabbing"
-          style={{ x }}
-        >
+        {/* Desktop Horizontal Scroll */}
+        <div className="hidden md:block">
+          <motion.div
+            className="flex gap-10 cursor-grab active:cursor-grabbing px-[5%]"
+            style={{ x }}
+          >
+            {projects.map((project, index) => (
+              <ProjectCard key={index} project={project} onClick={() => setSelectedProject(project)} />
+            ))}
+          </motion.div>
+        </div>
+
+        {/* Mobile Vertical Stack */}
+        <div className="md:hidden px-4 space-y-8">
           {projects.map((project, index) => (
             <motion.div
               key={index}
-              className="relative flex-shrink-0 w-[80vw] md:w-[600px] lg:w-[800px] group"
-              whileHover={{ scale: 0.98 }}
-              transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-              onClick={() => setSelectedProject(project)}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: index * 0.1 }}
             >
-              <div className="relative aspect-[16/10] overflow-hidden rounded-[2rem] border border-white/5">
-                <motion.img
-                  src={project.image}
-                  alt={project.title}
-                  className="w-full h-full object-cover grayscale-[0.5] group-hover:grayscale-0 transition-all duration-1000 group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60 group-hover:opacity-40 transition-opacity duration-700" />
-
-                <div className="absolute bottom-10 left-10 right-10 flex justify-between items-end transform translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-700">
-                  <div className="max-w-md">
-                    <Badge className="bg-white/10 backdrop-blur-md text-white border-white/10 mb-4">{project.category}</Badge>
-                    <h3 className="text-3xl md:text-5xl font-display font-bold text-white mb-2">{project.title}</h3>
-                    <p className="text-white/70 text-lg font-light leading-snug">{project.description}</p>
-                  </div>
-                  <div className="w-20 h-20 rounded-full bg-white flex items-center justify-center text-black shadow-2xl">
-                    <Plus className="w-8 h-8" />
-                  </div>
-                </div>
-              </div>
+              <ProjectCard project={project} onClick={() => setSelectedProject(project)} />
             </motion.div>
           ))}
-        </motion.div>
+        </div>
       </div>
 
       <Dialog open={!!selectedProject} onOpenChange={() => setSelectedProject(null)}>
-        <DialogContent className="max-w-6xl h-[85vh] overflow-y-auto p-0 border-none bg-black/95 backdrop-blur-3xl rounded-[3rem]">
+        <DialogContent className="max-w-6xl h-[90vh] md:h-[85vh] overflow-y-auto p-0 border-none bg-black/95 backdrop-blur-3xl rounded-none md:rounded-[3rem]">
           {selectedProject && (
             <div className="flex flex-col lg:flex-row h-full">
               <div className="lg:w-1/2 h-full relative">
                 <img src={selectedProject.image} alt={project.title} className="w-full h-full object-cover" />
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent to-black lg:block hidden" />
               </div>
-              <div className="lg:w-1/2 p-12 lg:p-20 flex flex-col justify-center gap-10">
+              <div className="lg:w-1/2 p-8 md:p-12 lg:p-20 flex flex-col justify-center gap-8 md:gap-10">
                 <Badge className="w-fit bg-primary/10 text-primary border-primary/20">{selectedProject.category}</Badge>
                 <div>
-                  <h2 className="text-5xl md:text-7xl font-display font-bold mb-6 tracking-tight">{selectedProject.title}</h2>
-                  <p className="text-xl text-muted-foreground font-light leading-relaxed">{selectedProject.longDescription}</p>
+                  <h2 className="text-4xl md:text-7xl font-display font-bold mb-6 tracking-tight">{selectedProject.title}</h2>
+                  <p className="text-lg md:text-xl text-muted-foreground font-light leading-relaxed">{selectedProject.longDescription}</p>
                 </div>
 
                 <div className="space-y-4">
@@ -182,11 +203,11 @@ const CaseStudies = () => {
                   </div>
                 </div>
 
-                <div className="flex gap-6">
-                  <Button asChild size="lg" className="rounded-full px-10 h-16 text-lg bg-white text-black hover:bg-gray-200">
+                <div className="flex flex-col sm:flex-row gap-4 sm:gap-6">
+                  <Button asChild size="lg" className="rounded-full px-10 h-14 md:h-16 text-lg bg-white text-black hover:bg-gray-200">
                     <a href={selectedProject.demoLink}>Live Performance</a>
                   </Button>
-                  <Button asChild variant="outline" size="lg" className="rounded-full px-10 h-16 text-lg border-white/20 hover:bg-white/5">
+                  <Button asChild variant="outline" size="lg" className="rounded-full px-10 h-14 md:h-16 text-lg border-white/20 hover:bg-white/5">
                     <a href={selectedProject.sourceLink}><Github className="mr-2" /> Source</a>
                   </Button>
                 </div>

@@ -99,11 +99,11 @@ const Hero = () => {
         </h1>
 
         {/* Subheading */}
-        <div className="max-w-3xl mx-auto mb-12 space-y-2">
+        <div className="max-w-3xl mx-auto mb-12 sm:mb-16 space-y-2 px-4 md:px-0">
           {subheadingLines.map((line, index) => (
             <motion.p
               key={index}
-              className="text-lg sm:text-xl md:text-2xl text-muted-foreground font-light leading-relaxed"
+              className="text-base sm:text-xl md:text-2xl text-muted-foreground font-light leading-relaxed"
               initial={{ opacity: 0, filter: 'blur(10px)' }}
               animate={{ opacity: 1, filter: 'blur(0px)' }}
               transition={{
@@ -119,15 +119,15 @@ const Hero = () => {
 
         {/* CTA Buttons */}
         <motion.div
-          className="flex flex-col sm:flex-row gap-6 justify-center items-center"
+          className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center px-4"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 2 }}
         >
-          <GlowButton variant="primary" className="px-10 py-4 text-lg">
+          <GlowButton variant="primary" className="w-full sm:w-auto px-10 py-4 text-base md:text-lg">
             Start a Project
           </GlowButton>
-          <GlowButton variant="outline" className="px-10 py-4 text-lg border-white/10 hover:border-primary/50">
+          <GlowButton variant="outline" className="w-full sm:w-auto px-10 py-4 text-base md:text-lg border-white/10 hover:border-primary/50">
             Book a Call
           </GlowButton>
         </motion.div>
