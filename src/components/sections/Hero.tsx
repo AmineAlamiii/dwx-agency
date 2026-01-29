@@ -53,7 +53,7 @@ const Hero = () => {
           className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass mb-8 border border-primary/20"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
+          transition={{ duration: 0.3, delay: 0.05 }}
         >
           <span className="relative flex h-2 w-2">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
@@ -71,7 +71,7 @@ const Hero = () => {
               className="block"
               initial={{ y: "100%" }}
               animate={{ y: 0 }}
-              transition={{ duration: 0.8, ease: [0.33, 1, 0.68, 1], delay: 0.4 }}
+              transition={{ duration: 0.4, ease: [0.33, 1, 0.68, 1], delay: 0.1 }}
             >
               DWX <span className="gradient-text">—</span>
             </motion.span>
@@ -81,7 +81,7 @@ const Hero = () => {
               className="block gradient-text brightness-125"
               initial={{ y: "100%" }}
               animate={{ y: 0 }}
-              transition={{ duration: 0.8, ease: [0.33, 1, 0.68, 1], delay: 0.6 }}
+              transition={{ duration: 0.4, ease: [0.33, 1, 0.68, 1], delay: 0.15 }}
             >
               Beyond
             </motion.span>
@@ -91,7 +91,7 @@ const Hero = () => {
               className="block text-foreground/90"
               initial={{ y: "100%" }}
               animate={{ y: 0 }}
-              transition={{ duration: 0.8, ease: [0.33, 1, 0.68, 1], delay: 0.8 }}
+              transition={{ duration: 0.4, ease: [0.33, 1, 0.68, 1], delay: 0.2 }}
             >
               Digital.
             </motion.span>
@@ -107,8 +107,8 @@ const Hero = () => {
               initial={{ opacity: 0, filter: 'blur(10px)' }}
               animate={{ opacity: 1, filter: 'blur(0px)' }}
               transition={{
-                duration: 1,
-                delay: 1.2 + index * 0.2,
+                duration: 0.4,
+                delay: 0.25 + index * 0.05,
                 ease: "easeOut",
               }}
             >
@@ -122,7 +122,7 @@ const Hero = () => {
           className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center px-4"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 2 }}
+          transition={{ duration: 0.4, delay: 0.4 }}
         >
           <GlowButton variant="primary" className="w-full sm:w-auto px-10 py-4 text-base md:text-lg">
             Start a Project
@@ -141,7 +141,7 @@ const Hero = () => {
         className="absolute bottom-10 left-1/2 -translate-x-1/2 z-30"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 3, duration: 1 }}
+        transition={{ delay: 0.5, duration: 0.5 }}
       >
         <div className="flex flex-col items-center gap-2">
           <span className="text-[10px] uppercase tracking-widest text-muted-foreground/50">Scroll</span>
