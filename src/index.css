@@ -166,28 +166,67 @@
     @apply from-secondary to-accent;
   }
 
-  /* Utility Backgrounds */
-  .gradient-bg-animated {
-    background: linear-gradient(-45deg,
-        hsl(240 10% 2%),
-        hsl(240 10% 5%),
-        hsl(220 10% 4%),
-        hsl(240 10% 2%));
-    background-size: 400% 400%;
-    animation: gradient-shift 15s ease infinite;
+  /* Instant Fade In for Critical Content on Mobile */
+  @keyframes fade-in-immediate {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 
-  /* Animations */
-  .float {
-    animation: float 6s ease-in-out infinite;
+  .animate-on-load {
+    animation: fade-in-immediate 0.5s ease-out forwards;
+  }
+}
+
+/* Utility Backgrounds */
+.gradient-bg-animated {
+  background: linear-gradient(-45deg,
+      hsl(240 10% 2%),
+      hsl(240 10% 5%),
+      hsl(220 10% 4%),
+      hsl(240 10% 2%));
+  background-size: 400% 400%;
+  animation: gradient-shift 15s ease infinite;
+}
+
+/* Animations */
+.float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.section-padding {
+  @apply px-4 sm:px-6 lg:px-8 py-16 md:py-32 scroll-mt-20 md:scroll-mt-24;
+}
+
+.container-custom {
+  @apply max-w-7xl mx-auto px-4 sm:px-8 lg:px-12;
+}
+
+
+/* Force visibility on mobile to prevent 3s delay if JS/Animation is slow */
+@media (max-width: 768px) {
+
+  section:first-of-type h1 span,
+  section:first-of-type p,
+  section:first-of-type .glass,
+  section:first-of-type button,
+  section:first-of-type a {
+    opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
+    transition: none !important;
   }
 
-  .section-padding {
-    @apply px-4 sm:px-6 lg:px-8 py-16 md:py-32 scroll-mt-20 md:scroll-mt-24;
-  }
-
-  .container-custom {
-    @apply max-w-7xl mx-auto px-4 sm:px-8 lg:px-12;
+  /* Re-enable simple fade in via CSS class if needed, or leave static for speed */
+  .animate-on-load {
+    opacity: 0;
+    animation: fade-in-immediate 0.5s ease-out forwards !important;
   }
 }
 
