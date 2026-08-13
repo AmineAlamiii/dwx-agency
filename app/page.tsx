@@ -15,7 +15,6 @@ import {
   Code2,
   Cpu,
   Database,
-  Globe2,
   Layers3,
   LifeBuoy,
   LockKeyhole,
@@ -34,9 +33,7 @@ import {
   Star,
   TrendingUp,
   Users,
-  Workflow,
   X,
-  Zap,
 } from "lucide-react";
 
 const services = [
@@ -123,34 +120,6 @@ function Counter({ value, suffix = "" }: { value: number; suffix?: string }) {
   return <span ref={ref}>{count}{suffix}</span>;
 }
 
-function Ecosystem() {
-  const modules = [
-    { icon: Code2, label: "Web", pos: "web" }, { icon: Smartphone, label: "Mobile", pos: "mobile" },
-    { icon: Cloud, label: "Cloud", pos: "cloud" }, { icon: ShieldCheck, label: "Security", pos: "security" },
-    { icon: BrainCircuit, label: "AI", pos: "ai" }, { icon: ServerCog, label: "DevOps", pos: "devops" },
-  ];
-  return (
-    <motion.div className="ecosystem-wrap" initial={{ opacity: 0, y: 40, scale: .96 }} animate={{ opacity: 1, y: 0, scale: 1 }} transition={{ delay: .45, duration: .9 }}>
-      <div className="eco-window">
-        <div className="window-bar"><span /><span /><span /><div className="window-title">NEXORA Control Center</div><div className="live-pill"><i />Systems live</div></div>
-        <div className="eco-grid">
-          <aside className="eco-sidebar"><div className="mini-logo">N</div>{[Globe2, Layers3, Workflow, Database].map((Icon, i) => <Icon key={i} size={18} className={i === 0 ? "active" : ""} />)}</aside>
-          <div className="eco-stage">
-            <div className="grid-lines" />
-            <div className="pulse-ring ring-one" /><div className="pulse-ring ring-two" />
-            <div className="eco-core"><div className="core-icon"><Zap size={28} /></div><strong>NEXORA</strong><span>Unified technology</span></div>
-            {modules.map(({ icon: Icon, label, pos }, i) => <motion.div key={label} className={`eco-module ${pos}`} animate={{ y: [0, -7, 0] }} transition={{ duration: 4 + i * .35, repeat: Infinity, ease: "easeInOut" }}><span><Icon size={17} /></span>{label}<i /></motion.div>)}
-            <div className="activity-card"><div><span>Delivery velocity</span><b>+38%</b></div><div className="bars">{[32, 42, 38, 58, 51, 74, 82].map((n, i) => <i key={i} style={{ height: `${n}%` }} />)}</div></div>
-            <div className="security-card"><ShieldCheck size={20}/><div><b>All systems protected</b><span>12 checks passed</span></div><CircleCheck size={18}/></div>
-          </div>
-        </div>
-      </div>
-      <div className="float-badge float-a"><Star size={16} fill="currentColor"/> 4.9 client rating</div>
-      <div className="float-badge float-b"><Zap size={16}/> Shipping 3.2× faster</div>
-    </motion.div>
-  );
-}
-
 function VisualPanel({ type }: { type: string }) {
   if (type === "secure") return <div className="mini-ui security-ui"><div className="ui-top"><span>Security posture</span><span className="status"><i/>Protected</span></div><div className="shield-orbit"><div className="orbit o1"/><div className="orbit o2"/><ShieldCheck size={52}/></div><div className="risk-grid">{["Endpoints", "Cloud", "Identity"].map((x, i) => <div key={x}><i className={`risk r${i}`}/><span>{x}</span><b>{[98, 100, 96][i]}%</b></div>)}</div></div>;
   if (type === "scale") return <div className="mini-ui scale-ui"><div className="ui-top"><span>Global infrastructure</span><span>Live</span></div><div className="node-map"><div className="map-line l1"/><div className="map-line l2"/>{["us", "eu", "ap", "af"].map((x, i) => <span className={`map-node ${x}`} key={x}><i/>{["US", "EU", "APAC", "AFR"][i]}</span>)}</div><div className="scale-stats"><div><small>Requests</small><b>8.4M</b></div><div><small>Latency</small><b>42ms</b></div><div><small>Uptime</small><b>99.99%</b></div></div></div>;
@@ -193,7 +162,6 @@ function App() {
           <motion.div variants={fade} className="hero-actions"><a className="btn btn-primary large" href="#contact">Start a Project <ArrowRight size={18}/></a><a className="btn btn-secondary large" href="#services"><Play size={16} fill="currentColor"/> Explore Our Services</a></motion.div>
           <motion.div variants={fade} className="trust-points">{["Free consultation", "Fast response", "Flexible solutions"].map(x=><span key={x}><Check size={15}/>{x}</span>)}</motion.div>
         </motion.div>
-        <Ecosystem />
       </section>
 
       <section className="trust-section" aria-label="Trusted by ambitious companies">
