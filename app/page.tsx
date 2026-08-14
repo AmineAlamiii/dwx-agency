@@ -37,14 +37,14 @@ import {
 } from "lucide-react";
 
 const services = [
-  { icon: Code2, tone: "purple", title: "Web Development", copy: "High-performance websites, corporate platforms, landing pages and web applications.", tags: ["React", "Next.js", "TypeScript", "Node.js"], size: "wide" },
+  { icon: Code2, tone: "purple", title: "Web Development", copy: "High-performance websites, corporate platforms, landing pages and web applications.", tags: ["React", "Next.js", "TypeScript", "Node.js"] },
   { icon: Smartphone, tone: "blue", title: "Mobile Apps", copy: "Native and cross-platform experiences for iOS and Android.", tags: ["React Native", "Flutter", "Swift", "Kotlin"] },
   { icon: Boxes, tone: "cyan", title: "Custom Software", copy: "Purpose-built systems designed around the way your business operates.", tags: ["CRM", "ERP", "SaaS", "Internal tools"] },
   { icon: Palette, tone: "pink", title: "UI/UX Design", copy: "Beautiful, intuitive experiences engineered for usability and conversion.", tags: ["Research", "Prototypes", "Design systems"] },
-  { icon: ShieldCheck, tone: "green", title: "Cybersecurity", copy: "Protect your applications, infrastructure and critical business data.", tags: ["Audits", "Pen testing", "Monitoring"], size: "wide" },
+  { icon: ShieldCheck, tone: "green", title: "Cybersecurity", copy: "Protect your applications, infrastructure and critical business data.", tags: ["Audits", "Pen testing", "Monitoring"] },
   { icon: Cloud, tone: "blue", title: "Cloud Solutions", copy: "Scalable, resilient infrastructure across the world’s leading cloud platforms.", tags: ["AWS", "Azure", "Google Cloud"] },
   { icon: ServerCog, tone: "orange", title: "DevOps", copy: "Automate delivery, infrastructure and observability from commit to production.", tags: ["CI/CD", "Docker", "Kubernetes"] },
-  { icon: BrainCircuit, tone: "purple", title: "AI & Automation", copy: "Put intelligent agents and workflows to work across your business.", tags: ["AI agents", "LLMs", "Automation"], size: "wide" },
+  { icon: BrainCircuit, tone: "purple", title: "AI & Automation", copy: "Put intelligent agents and workflows to work across your business.", tags: ["AI agents", "LLMs", "Automation"] },
   { icon: LifeBuoy, tone: "pink", title: "Managed IT", copy: "Reliable monitoring, maintenance and technical support—always within reach.", tags: ["24/7 support", "Maintenance", "Ops"] },
 ];
 
@@ -172,7 +172,7 @@ function App() {
 
       <section className="section services-section" id="services">
         <SectionHeading eyebrow="One connected team" title="One agency. Every IT service you need." copy="Stop managing multiple vendors. We bring your digital technology under one expert team." />
-        <div className="bento-grid">{services.map(({icon:Icon,tone,title,copy,tags,size}, i)=><motion.article key={title} className={`service-card ${size || ""}`} variants={fade} initial="hidden" whileInView="visible" viewport={{once:true,margin:"-40px"}} transition={{delay:(i%3)*.08}}><div className={`service-icon ${tone}`}><Icon size={22}/></div><h3>{title}</h3><p>{copy}</p><div className="tag-list">{tags.map(t=><span key={t}>{t}</span>)}</div><a href="#contact" aria-label={`Explore ${title}`}>Explore <ArrowRight size={16}/></a><div className="card-glow"/></motion.article>)}</div>
+        <div className="bento-grid">{services.map(({icon:Icon,tone,title,copy,tags}, i)=><motion.article key={title} className="service-card" variants={fade} initial="hidden" whileInView="visible" viewport={{once:true,margin:"-40px"}} transition={{delay:(i%3)*.08}}><div className={`service-icon ${tone}`}><Icon size={22}/></div><h3>{title}</h3><p>{copy}</p><div className="tag-list">{tags.map(t=><span key={t}>{t}</span>)}</div><a href="#contact" aria-label={`Explore ${title}`}>Explore <ArrowRight size={16}/></a><div className="card-glow"/></motion.article>)}</div>
       </section>
 
       <section className="partner-section" id="about">

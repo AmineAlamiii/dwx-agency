@@ -33,3 +33,4 @@ footer{background:#f7f7fa}.footer-top{display:grid;grid-template-columns:1.4fr r
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
 .hero{min-height:0;padding-bottom:105px;background:radial-gradient(circle at 50% 0,#fbf6ff 0,#fff 72%)}
 @media(max-width:720px){.hero{padding-bottom:74px}}
+.bento-grid{grid-auto-rows:1fr}.service-card{height:100%}
