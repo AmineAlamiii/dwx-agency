@@ -146,10 +146,10 @@ function App() {
     <main>
       <nav className="nav-shell" aria-label="Main navigation">
         <a className="brand" href="#top" aria-label="NEXORA IT home"><span className="brand-mark"><i/><i/><i/></span><b>NEXORA</b><small>IT</small></a>
-        <div className="nav-links">{["Services", "Solutions", "Work", "About", "Process", "Resources"].map(link => <a href={`#${link.toLowerCase()}`} key={link}>{link}</a>)}</div>
+        <div className="nav-links">{["Services", "Solutions", "Work", "Process", "Resources"].map(link => <a href={`#${link.toLowerCase()}`} key={link}>{link}</a>)}</div>
         <div className="nav-actions"><a className="btn btn-quiet" href="#contact">Let’s Talk</a><a className="btn btn-primary small" href="#contact">Start a Project <ArrowRight size={16}/></a></div>
         <button className="menu-btn" onClick={() => setMenuOpen(!menuOpen)} aria-label="Toggle navigation" aria-expanded={menuOpen}>{menuOpen ? <X/> : <Menu/>}</button>
-        <AnimatePresence>{menuOpen && <motion.div className="mobile-menu" initial={{opacity:0,y:-12}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-12}}>{["Services", "Solutions", "Work", "About", "Process", "Resources"].map(link => <a onClick={() => setMenuOpen(false)} href={`#${link.toLowerCase()}`} key={link}>{link}<ArrowRight size={17}/></a>)}<a className="btn btn-primary" href="#contact">Start a Project</a></motion.div>}</AnimatePresence>
+        <AnimatePresence>{menuOpen && <motion.div className="mobile-menu" initial={{opacity:0,y:-12}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-12}}>{["Services", "Solutions", "Work", "Process", "Resources"].map(link => <a onClick={() => setMenuOpen(false)} href={`#${link.toLowerCase()}`} key={link}>{link}<ArrowRight size={17}/></a>)}<a className="btn btn-primary" href="#contact">Start a Project</a></motion.div>}</AnimatePresence>
       </nav>
 
       <section className="hero" id="top">
@@ -173,16 +173,6 @@ function App() {
       <section className="section services-section" id="services">
         <SectionHeading eyebrow="One connected team" title="One agency. Every IT service you need." copy="Stop managing multiple vendors. We bring your digital technology under one expert team." />
         <div className="bento-grid">{services.map(({icon:Icon,tone,title,copy,tags}, i)=><motion.article key={title} className="service-card" variants={fade} initial="hidden" whileInView="visible" viewport={{once:true,margin:"-40px"}} transition={{delay:(i%3)*.08}}><div className={`service-icon ${tone}`}><Icon size={22}/></div><h3>{title}</h3><p>{copy}</p><div className="tag-list">{tags.map(t=><span key={t}>{t}</span>)}</div><a href="#contact" aria-label={`Explore ${title}`}>Explore <ArrowRight size={16}/></a><div className="card-glow"/></motion.article>)}</div>
-      </section>
-
-      <section className="partner-section" id="about">
-        <div className="partner-inner"><SectionHeading light eyebrow="The full-service advantage" title="Why work with five providers when you can work with one?" copy="Strategy, design, development, infrastructure, security and support — all connected under one technology partner."/>
-          <motion.div className="partner-map" initial={{opacity:0,scale:.94}} whileInView={{opacity:1,scale:1}} viewport={{once:true}}>
-            <div className="map-glow"/><div className="partner-core"><span className="brand-mark"><i/><i/><i/></span><b>NEXORA</b><small>One technology partner</small></div>
-            {["Strategy","Design","Development","Cloud","Security","AI","Support","DevOps"].map((x,i)=>{ const PartnerIcon = [Sparkles,Palette,Code2,Cloud,ShieldCheck,BrainCircuit,LifeBuoy,ServerCog][i]; return <motion.div className={`partner-node node-${i+1}`} key={x} animate={reduceMotion ? {} : {y:[0,-6,0]}} transition={{duration:3.5+i*.2,repeat:Infinity}}><span><PartnerIcon size={18}/></span>{x}</motion.div>; })}
-            <div className="orbit-ring or1"/><div className="orbit-ring or2"/>
-          </motion.div>
-        </div>
       </section>
 
       <section className="section solutions-section" id="solutions">
