@@ -56,7 +56,7 @@ const solutions = {
   SaaS: { icon: Layers3, eyebrow: "For software companies", title: "Build a platform customers love and investors trust.", copy: "Product strategy, scalable engineering and ongoing iteration from a team that understands SaaS economics.", items: ["Product Engineering", "Multi-tenant SaaS", "Billing", "Analytics", "Platform Security"], cta: "Build Your Platform" },
 };
 
-const tech = ["React", "Next.js", "Vue", "Angular", "Node.js", "Python", "Laravel", "Java", ".NET", "Flutter", "React Native", "AWS", "Azure", "Google Cloud", "Docker", "Kubernetes", "PostgreSQL", "MongoDB", "Redis", "GitHub", "Figma", "OpenAI"];
+const tech = ["React", "Next.js", "Vue", "Angular", "Node.js", "Python", "Laravel", "Java", ".NET", "Flutter", "React Native", "AWS", "Azure", "Google Cloud", "Cloudflare", "Docker", "Kubernetes", "PostgreSQL", "MongoDB", "Redis", "GitHub", "Figma", "OpenAI"];
 
 const valueProps = [
   { label: "Build faster", title: "Turn ideas into production-ready digital products.", copy: "A connected design and engineering workflow keeps decisions moving and quality high.", icon: SquareTerminal, type: "build", stat: "3.2×", statLabel: "faster delivery" },
