@@ -2,6 +2,29 @@
 
 import { FormEvent, useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useInView, useReducedMotion } from "framer-motion";
+import { FaAws, FaJava } from "react-icons/fa6";
+import {
+  SiAngular,
+  SiCloudflare,
+  SiDocker,
+  SiDotnet,
+  SiFigma,
+  SiFlutter,
+  SiGithub,
+  SiGooglecloud,
+  SiKubernetes,
+  SiLaravel,
+  SiMongodb,
+  SiNextdotjs,
+  SiNodedotjs,
+  SiPostgresql,
+  SiPython,
+  SiReact,
+  SiRedis,
+  SiVuedotjs,
+} from "react-icons/si";
+import { TbBrandOpenai } from "react-icons/tb";
+import { VscAzure } from "react-icons/vsc";
 import {
   ArrowRight,
   Bot,
@@ -56,7 +79,31 @@ const solutions = {
   SaaS: { icon: Layers3, eyebrow: "For software companies", title: "Build a platform customers love and investors trust.", copy: "Product strategy, scalable engineering and ongoing iteration from a team that understands SaaS economics.", items: ["Product Engineering", "Multi-tenant SaaS", "Billing", "Analytics", "Platform Security"], cta: "Build Your Platform" },
 };
 
-const tech = ["React", "Next.js", "Vue", "Angular", "Node.js", "Python", "Laravel", "Java", ".NET", "Flutter", "React Native", "AWS", "Azure", "Google Cloud", "Cloudflare", "Docker", "Kubernetes", "PostgreSQL", "MongoDB", "Redis", "GitHub", "Figma", "OpenAI"];
+const tech = [
+  { name: "React", icon: SiReact, color: "#61dafb" },
+  { name: "Next.js", icon: SiNextdotjs, color: "#ffffff" },
+  { name: "Vue", icon: SiVuedotjs, color: "#42b883" },
+  { name: "Angular", icon: SiAngular, color: "#f15b64" },
+  { name: "Node.js", icon: SiNodedotjs, color: "#5fa04e" },
+  { name: "Python", icon: SiPython, color: "#ffd43b" },
+  { name: "Laravel", icon: SiLaravel, color: "#ff5a55" },
+  { name: "Java", icon: FaJava, color: "#f89820" },
+  { name: ".NET", icon: SiDotnet, color: "#9b6dff" },
+  { name: "Flutter", icon: SiFlutter, color: "#54c5f8" },
+  { name: "React Native", icon: SiReact, color: "#61dafb" },
+  { name: "AWS", icon: FaAws, color: "#ff9900" },
+  { name: "Azure", icon: VscAzure, color: "#45aaf2" },
+  { name: "Google Cloud", icon: SiGooglecloud, color: "#4285f4" },
+  { name: "Cloudflare", icon: SiCloudflare, color: "#f48120" },
+  { name: "Docker", icon: SiDocker, color: "#2496ed" },
+  { name: "Kubernetes", icon: SiKubernetes, color: "#5c82e7" },
+  { name: "PostgreSQL", icon: SiPostgresql, color: "#5c8db7" },
+  { name: "MongoDB", icon: SiMongodb, color: "#47a248" },
+  { name: "Redis", icon: SiRedis, color: "#ff5a5f" },
+  { name: "GitHub", icon: SiGithub, color: "#ffffff" },
+  { name: "Figma", icon: SiFigma, color: "#f24e1e" },
+  { name: "OpenAI", icon: TbBrandOpenai, color: "#ffffff" },
+];
 
 const valueProps = [
   { label: "Build faster", title: "Turn ideas into production-ready digital products.", copy: "A connected design and engineering workflow keeps decisions moving and quality high.", icon: SquareTerminal, type: "build", stat: "3.2×", statLabel: "faster delivery" },
@@ -130,6 +177,9 @@ function VisualPanel({ type }: { type: string }) {
 function App() {
   const reduceMotion = useReducedMotion();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [showMobileCta, setShowMobileCta] = useState(false);
+  const [contactInView, setContactInView] = useState(false);
+  const contactRef = useRef<HTMLElement>(null);
   const [activeSolution, setActiveSolution] = useState<keyof typeof solutions>("Startups");
   const [openFaq, setOpenFaq] = useState(0);
   const [testimonial, setTestimonial] = useState(0);
@@ -140,6 +190,19 @@ function App() {
     const id = window.setInterval(() => setTestimonial(v => (v + 1) % testimonials.length), 6500);
     return () => window.clearInterval(id);
   }, [reduceMotion]);
+  useEffect(() => {
+    const updateCta = () => setShowMobileCta(window.scrollY > 180);
+    updateCta();
+    window.addEventListener("scroll", updateCta, { passive: true });
+    return () => window.removeEventListener("scroll", updateCta);
+  }, []);
+  useEffect(() => {
+    const contact = contactRef.current;
+    if (!contact) return;
+    const observer = new IntersectionObserver(([entry]) => setContactInView(entry.isIntersecting), { threshold: .08 });
+    observer.observe(contact);
+    return () => observer.disconnect();
+  }, []);
   const submit = (e: FormEvent<HTMLFormElement>) => { e.preventDefault(); setFormSent(true); };
 
   return (
@@ -151,6 +214,10 @@ function App() {
         <button className="menu-btn" onClick={() => setMenuOpen(!menuOpen)} aria-label="Toggle navigation" aria-expanded={menuOpen}>{menuOpen ? <X/> : <Menu/>}</button>
         <AnimatePresence>{menuOpen && <motion.div className="mobile-menu" initial={{opacity:0,y:-12}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-12}}>{["Services", "Solutions", "Work", "Process", "Resources"].map(link => <a onClick={() => setMenuOpen(false)} href={`#${link.toLowerCase()}`} key={link}>{link}<ArrowRight size={17}/></a>)}<a className="btn btn-primary" href="#contact">Start a Project</a></motion.div>}</AnimatePresence>
       </nav>
+
+      <AnimatePresence>
+        {showMobileCta && !contactInView && !menuOpen && <motion.a className="mobile-scroll-cta" href="#contact" aria-label="Start a project" initial={{opacity:0,y:24,scale:.97}} animate={{opacity:1,y:0,scale:1}} exit={{opacity:0,y:18,scale:.97}} transition={{duration:.24,ease:"easeOut"}}>Start a Project <ArrowRight size={15}/></motion.a>}
+      </AnimatePresence>
 
       <section className="hero" id="top">
         <div className="hero-aurora a1"/><div className="hero-aurora a2"/><div className="hero-grid"/>
@@ -181,7 +248,7 @@ function App() {
         <AnimatePresence mode="wait"><motion.div className="solution-panel" key={activeSolution} initial={{opacity:0,y:14}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-10}} transition={{duration:.35}}><div className="solution-copy"><span className="solution-icon"><current.icon size={25}/></span><small>{current.eyebrow}</small><h3>{current.title}</h3><p>{current.copy}</p><a className="btn btn-dark" href="#contact">{current.cta}<ArrowRight size={17}/></a></div><div className="solution-list"><span>WHAT WE’LL DELIVER</span>{current.items.map((x,i)=><motion.div key={x} initial={{opacity:0,x:20}} animate={{opacity:1,x:0}} transition={{delay:.1+i*.06}}><i>{String(i+1).padStart(2,"0")}</i><b>{x}</b><CircleCheck size={19}/></motion.div>)}</div></motion.div></AnimatePresence>
       </section>
 
-      <section className="tech-section" id="resources"><div className="section"><SectionHeading light eyebrow="Modern by default" title="Built with technology that scales." copy="Battle-tested platforms. The right tool for every job. No trend-chasing, no lock-in."/><div className="tech-cloud">{tech.map((x,i)=><motion.span key={x} initial={{opacity:0,scale:.85}} whileInView={{opacity:1,scale:1}} viewport={{once:true}} transition={{delay:(i%8)*.045}}><i className={`tech-dot td${i%6}`}/>{x}</motion.span>)}</div></div></section>
+      <section className="tech-section" id="resources"><div className="section"><SectionHeading light eyebrow="Modern by default" title="Built with technology that scales." copy="Battle-tested platforms. The right tool for every job. No trend-chasing, no lock-in."/><div className="tech-cloud">{tech.map(({name,icon:Icon,color},i)=><motion.span key={name} initial={{opacity:0,scale:.85}} whileInView={{opacity:1,scale:1}} viewport={{once:true}} transition={{delay:(i%8)*.045}}><Icon className="tech-logo" style={{color}} aria-hidden="true"/>{name}</motion.span>)}</div></div></section>
 
       <section className="section value-section">
         <SectionHeading eyebrow="Outcomes, not output" title="Move faster. Stay safer. Scale smarter." copy="Every part of your technology works better when it is designed as one connected system."/>
@@ -203,7 +270,7 @@ function App() {
 
       <section className="section faq-section"><div className="faq-intro"><span className="eyebrow"><Sparkles size={14}/> Questions, answered</span><h2>Everything you need to know.</h2><p>Can’t find what you’re looking for?</p><a href="#contact">Talk to our team <ArrowRight size={15}/></a></div><div className="faq-list">{faqs.map(([q,a],i)=><div className={`faq-item ${openFaq===i?"open":""}`} key={q}><button onClick={()=>setOpenFaq(openFaq===i?-1:i)} aria-expanded={openFaq===i}><span>{q}</span><ChevronDown size={20}/></button><AnimatePresence initial={false}>{openFaq===i&&<motion.div initial={{height:0,opacity:0}} animate={{height:"auto",opacity:1}} exit={{height:0,opacity:0}}><p>{a}</p></motion.div>}</AnimatePresence></div>)}</div></section>
 
-      <section className="contact-section" id="contact"><div className="contact-glow g1"/><div className="contact-glow g2"/><div className="section contact-layout"><div className="contact-copy"><span className="eyebrow dark"><Sparkles size={14}/> Start something powerful</span><h2>Have an idea?<br/><span>Let’s build it.</span></h2><p>Tell us what you want to create. Our technology team will help turn it into a clear plan—and then into reality.</p><div className="contact-promise">{["Free, no-pressure consultation","A senior expert responds within 24 hours","Clear scope, timeline and next steps"].map(x=><span key={x}><CircleCheck size={18}/>{x}</span>)}</div></div><div className="contact-card">{formSent?<motion.div className="form-success" initial={{opacity:0,scale:.95}} animate={{opacity:1,scale:1}}><span><Check size={32}/></span><h3>Your project is on our radar.</h3><p>Thanks for reaching out. A NEXORA specialist will contact you within one business day.</p><button onClick={()=>setFormSent(false)} className="btn btn-secondary">Send another enquiry</button></motion.div>:<form onSubmit={submit}><div className="form-head"><h3>Tell us about your project</h3><p>We’ll get back to you within 24 hours.</p></div><div className="form-grid"><label>Name<input required name="name" placeholder="Your name"/></label><label>Company<input name="company" placeholder="Company name"/></label><label>Email<input required name="email" type="email" placeholder="you@company.com"/></label><label>Phone<input name="phone" type="tel" placeholder="+1 234 567 890"/></label><label>Service needed<select required defaultValue=""><option value="" disabled>Select a service</option>{["Web Development","Mobile App","Custom Software","Cybersecurity","Cloud / DevOps","AI & Automation","IT Support","UI/UX","Other"].map(x=><option key={x}>{x}</option>)}</select></label><label>Estimated budget<select required defaultValue=""><option value="" disabled>Select a range</option>{["Under $5K","$5K–$15K","$15K–$30K","$30K–$50K","$50K+"].map(x=><option key={x}>{x}</option>)}</select></label><label className="full">Project description<textarea required rows={4} placeholder="What are you looking to build or improve?"/></label></div><button className="btn btn-primary submit" type="submit">Let’s Build It <Send size={17}/></button><small className="privacy-note">By submitting, you agree to our privacy policy. No spam—ever.</small></form>}</div></div></section>
+      <section ref={contactRef} className="contact-section" id="contact"><div className="contact-glow g1"/><div className="contact-glow g2"/><div className="section contact-layout"><div className="contact-copy"><span className="eyebrow dark"><Sparkles size={14}/> Start something powerful</span><h2>Have an idea?<br/><span>Let’s build it.</span></h2><p>Tell us what you want to create. Our technology team will help turn it into a clear plan—and then into reality.</p><div className="contact-promise">{["Free, no-pressure consultation","A senior expert responds within 24 hours","Clear scope, timeline and next steps"].map(x=><span key={x}><CircleCheck size={18}/>{x}</span>)}</div></div><div className="contact-card">{formSent?<motion.div className="form-success" initial={{opacity:0,scale:.95}} animate={{opacity:1,scale:1}}><span><Check size={32}/></span><h3>Your project is on our radar.</h3><p>Thanks for reaching out. A NEXORA specialist will contact you within one business day.</p><button onClick={()=>setFormSent(false)} className="btn btn-secondary">Send another enquiry</button></motion.div>:<form onSubmit={submit}><div className="form-head"><h3>Tell us about your project</h3><p>We’ll get back to you within 24 hours.</p></div><div className="form-grid"><label>Name<input required name="name" placeholder="Your name"/></label><label>Company<input name="company" placeholder="Company name"/></label><label>Email<input required name="email" type="email" placeholder="you@company.com"/></label><label>Phone<input name="phone" type="tel" placeholder="+1 234 567 890"/></label><label>Service needed<select required defaultValue=""><option value="" disabled>Select a service</option>{["Web Development","Mobile App","Custom Software","Cybersecurity","Cloud / DevOps","AI & Automation","IT Support","UI/UX","Other"].map(x=><option key={x}>{x}</option>)}</select></label><label>Estimated budget<select required defaultValue=""><option value="" disabled>Select a range</option>{["Under $5K","$5K–$15K","$15K–$30K","$30K–$50K","$50K+"].map(x=><option key={x}>{x}</option>)}</select></label><label className="full">Project description<textarea required rows={4} placeholder="What are you looking to build or improve?"/></label></div><button className="btn btn-primary submit" type="submit">Let’s Build It <Send size={17}/></button><small className="privacy-note">By submitting, you agree to our privacy policy. No spam—ever.</small></form>}</div></div></section>
 
       <footer><div className="section footer-top"><div className="footer-brand"><a className="brand" href="#top"><span className="brand-mark"><i/><i/><i/></span><b>NEXORA</b><small>IT</small></a><p>Your all-in-one technology partner for building, securing and scaling what’s next.</p><div className="socials">{[Users,Code2,Star,X].map((Icon,i)=><a href="#top" aria-label={["LinkedIn","GitHub","Instagram","X"][i]} key={i}><Icon size={17}/></a>)}</div></div>{[["Services","Web Development","Mobile Development","Software Development","UI/UX Design","Cybersecurity","Cloud & DevOps","AI & Automation"],["Solutions","Startups","SMEs","Agencies","E-commerce","SaaS"],["Company","About","Work","Process","Careers","Contact"],["Resources","Blog","Case Studies","FAQ","Insights"]].map(([title,...links])=><div className="footer-col" key={title}><b>{title}</b>{links.map(x=><a href={x==="Contact"?"#contact":"#top"} key={x}>{x}</a>)}</div>)}</div><div className="footer-bottom"><span>© {new Date().getFullYear()} NEXORA IT. All rights reserved.</span><div><a href="#top">Privacy Policy</a><a href="#top">Terms</a><a href="#top">Cookies</a></div><a href="#top">Back to top ↑</a></div></footer>
     </main>
