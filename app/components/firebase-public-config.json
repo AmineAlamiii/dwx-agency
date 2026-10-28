@@ -1,0 +1,11 @@
+{
+  "firebase": {
+    "apiKey": "AIzaSyANrr16eYZH1qJ72xybWyocq5y6gQLHpwc",
+    "appId": "1:216254759943:web:5900435f3a1b0275cf96a2",
+    "projectId": "dwx-agency-leads",
+    "authDomain": "dwx-agency-leads.firebaseapp.com",
+    "messagingSenderId": "216254759943"
+  },
+  "recaptchaSiteKey": "6LdWiOgtAAAAADIVI5vrMXNneVBgCqIQX6OEZfkN",
+  "backendReady": true
+}

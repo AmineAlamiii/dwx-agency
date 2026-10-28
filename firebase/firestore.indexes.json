@@ -1,0 +1,43 @@
+{
+  "indexes": [],
+  "fieldOverrides": [
+    {
+      "collectionGroup": "rateLimits",
+      "fieldPath": "expiresAt",
+      "ttl": true,
+      "indexes": []
+    },
+    {
+      "collectionGroup": "inquiries",
+      "fieldPath": "expiresAt",
+      "ttl": true,
+      "indexes": []
+    },
+    {
+      "collectionGroup": "inquiries",
+      "fieldPath": "message",
+      "indexes": []
+    },
+    {
+      "collectionGroup": "inquiries",
+      "fieldPath": "email",
+      "indexes": []
+    },
+    {
+      "collectionGroup": "inquiries",
+      "fieldPath": "name",
+      "indexes": []
+    },
+    {
+      "collectionGroup": "inquiries",
+      "fieldPath": "website",
+      "indexes": []
+    },
+    {
+      "collectionGroup": "usedTokens",
+      "fieldPath": "expiresAt",
+      "ttl": true,
+      "indexes": []
+    }
+  ]
+}
