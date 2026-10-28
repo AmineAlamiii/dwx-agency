@@ -1,7 +1,7 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
-/node_modules
+node_modules/
 /.pnp
 .pnp.*
 .yarn/*
@@ -30,13 +30,22 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+.dev.vars*
 
 # vercel
 .vercel
 
 # typescript
+*.tsbuildinfo
 next-env.d.ts
 /dist/
 /.wrangler/
 /outputs/
 /work/
+
+# Firebase generated files and emulator logs
+/firebase/functions/lib/
+/.firebase/
+firebase-debug.log*
+firestore-debug.log*
+ui-debug.log*

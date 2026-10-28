@@ -1,282 +1,1093 @@
 "use client";
 
-import { FormEvent, useEffect, useRef, useState } from "react";
-import { AnimatePresence, motion, useInView, useReducedMotion } from "framer-motion";
-import { FaAws, FaJava } from "react-icons/fa6";
+import "./components/craft.css";
+import "./components/business-first.css";
+import "./components/velocity.css";
+import "./components/agency-upgrade.css";
+import { IndustryShowcase } from "./components/industry-demos";
+import { AssistantSection } from "./components/support-chat";
+import { TechnologyShowcase, ClientConfidence } from "./components/technology-showcase";
+import { BusinessVelocity } from "./components/business-velocity";
 import {
-  SiAngular,
-  SiCloudflare,
-  SiDocker,
-  SiDotnet,
-  SiFigma,
-  SiFlutter,
-  SiGithub,
-  SiGooglecloud,
-  SiKubernetes,
-  SiLaravel,
-  SiMongodb,
-  SiNextdotjs,
-  SiNodedotjs,
-  SiPostgresql,
-  SiPython,
-  SiReact,
-  SiRedis,
-  SiVuedotjs,
-} from "react-icons/si";
-import { TbBrandOpenai } from "react-icons/tb";
-import { VscAzure } from "react-icons/vsc";
+  TrustStatement,
+  BusinessOutcomes,
+  WhyDwx,
+  WebsiteReview,
+} from "./components/conversion-sections";
+import { InquiryForm } from "./components/inquiry-form";
+import { LeadTracking } from "./components/lead-tracking";
+
+import { useEffect, useRef, useState } from "react";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import {
-  ArrowRight,
-  Bot,
-  Boxes,
-  BrainCircuit,
-  Building2,
+  ArrowUpRight,
   Check,
   ChevronDown,
-  CircleCheck,
-  Cloud,
-  Code2,
-  Cpu,
-  Database,
-  Layers3,
-  LifeBuoy,
-  LockKeyhole,
   Menu,
-  Palette,
-  Play,
-  Quote,
-  Rocket,
-  Send,
-  ServerCog,
-  ShieldCheck,
-  ShoppingBag,
-  Smartphone,
   Sparkles,
-  SquareTerminal,
-  Star,
-  TrendingUp,
-  Users,
   X,
 } from "lucide-react";
 
-const services = [
-  { icon: Code2, tone: "purple", title: "Web Development", copy: "High-performance websites, corporate platforms, landing pages and web applications.", tags: ["React", "Next.js", "TypeScript", "Node.js"] },
-  { icon: Smartphone, tone: "blue", title: "Mobile Apps", copy: "Native and cross-platform experiences for iOS and Android.", tags: ["React Native", "Flutter", "Swift", "Kotlin"] },
-  { icon: Boxes, tone: "cyan", title: "Custom Software", copy: "Purpose-built systems designed around the way your business operates.", tags: ["CRM", "ERP", "SaaS", "Internal tools"] },
-  { icon: Palette, tone: "pink", title: "UI/UX Design", copy: "Beautiful, intuitive experiences engineered for usability and conversion.", tags: ["Research", "Prototypes", "Design systems"] },
-  { icon: ShieldCheck, tone: "green", title: "Cybersecurity", copy: "Protect your applications, infrastructure and critical business data.", tags: ["Audits", "Pen testing", "Monitoring"] },
-  { icon: Cloud, tone: "blue", title: "Cloud Solutions", copy: "Scalable, resilient infrastructure across the world’s leading cloud platforms.", tags: ["AWS", "Azure", "Google Cloud"] },
-  { icon: ServerCog, tone: "orange", title: "DevOps", copy: "Automate delivery, infrastructure and observability from commit to production.", tags: ["CI/CD", "Docker", "Kubernetes"] },
-  { icon: BrainCircuit, tone: "purple", title: "AI & Automation", copy: "Put intelligent agents and workflows to work across your business.", tags: ["AI agents", "LLMs", "Automation"] },
-  { icon: LifeBuoy, tone: "pink", title: "Managed IT", copy: "Reliable monitoring, maintenance and technical support—always within reach.", tags: ["24/7 support", "Maintenance", "Ops"] },
+import { ChoiceTabs, MotionRuntime, Reveal } from "./components/motion-system";
+import {
+  DesignDemo,
+  BuildDemo,
+  AssistDemo,
+  OperationsDemo,
+  RentalDemo,
+} from "./components/product-previews";
+
+const growthPaths = [
+  {
+    label: "More customers",
+    cta: "Request a website review",
+    issue: "Visitors leave without taking the next step.",
+    headline: "Turn attention into action.",
+    copy: "Clarify your offer, remove the hesitation, and make the path from first visit to enquiry feel natural.",
+    focus: "A better website",
+    brief:
+      "I'd like to improve how our website turns visitors into enquiries or customers.",
+    steps: ["Understand the offer", "Find the right fit", "Take the next step"],
+    outcome: "A clearer path to becoming a customer.",
+    detail:
+      "Messaging, experience design and a website built around the decision your customer needs to make.",
+  },
+  {
+    label: "Less busywork",
+    cta: "Discuss my workflow",
+    issue: "Your team spends too much time moving work around.",
+    headline: "Give good people their time back.",
+    copy: "Connect the tools, knowledge and repetitive tasks that slow your team down. Keep people in charge of the decisions that matter.",
+    focus: "AI & automation",
+    brief:
+      "I'd like to reduce repetitive work and connect our business workflows with useful automation.",
+    steps: ["Connect the context", "Prepare the work", "Review and approve"],
+    outcome: "Less chasing. More meaningful work.",
+    detail:
+      "Connected workflows, internal tools and practical AI, with clear permissions and human review.",
+  },
+  {
+    label: "Room to grow",
+    cta: "Plan my next improvement",
+    issue: "Your product is making growth harder than it should be.",
+    headline: "Build for your next chapter.",
+    copy: "Untangle the platform, improve the experience and give your team a foundation they can confidently keep building on.",
+    focus: "Engineering",
+    brief:
+      "I'd like to improve our existing platform so it can support our next stage of growth.",
+    steps: [
+      "Find the constraints",
+      "Strengthen the foundation",
+      "Release with confidence",
+    ],
+    outcome: "A product that can move with your business.",
+    detail:
+      "A focused platform review, a practical roadmap and improvements delivered in manageable stages.",
+  },
 ];
 
-const solutions = {
-  Startups: { icon: Rocket, eyebrow: "For venture-backed speed", title: "Launch faster without building a full internal tech team.", copy: "From idea validation to scalable product, our senior team helps you move quickly without accumulating technical debt.", items: ["MVP Development", "UI/UX", "Cloud Architecture", "AI Integration", "Technical Consulting"], cta: "Build Your MVP" },
-  SMEs: { icon: Users, eyebrow: "For growing businesses", title: "Modernize your operations and unlock the next stage of growth.", copy: "Connect your tools, automate repetitive work and give your team technology that finally fits.", items: ["Business Automation", "Custom Software", "Cloud Migration", "Managed IT", "Data Platforms"], cta: "Modernize Your Business" },
-  Agencies: { icon: Building2, eyebrow: "For ambitious agencies", title: "Deliver more client projects without growing your internal team.", copy: "A flexible white-label technology partner that expands your delivery capacity, fills specialist gaps and protects your client relationships.", items: ["White-label Development", "Overflow Capacity", "Specialist Expertise", "Client Platform Delivery", "Ongoing Maintenance"], cta: "Partner With Us" },
-  "E-commerce": { icon: ShoppingBag, eyebrow: "For modern commerce", title: "Turn more traffic into loyal, high-value customers.", copy: "Fast storefronts, frictionless checkouts and connected operations built for ambitious retail brands.", items: ["Headless Commerce", "Conversion UX", "Payments", "ERP Integration", "Analytics"], cta: "Scale Your Store" },
-  SaaS: { icon: Layers3, eyebrow: "For software companies", title: "Build a platform customers love and investors trust.", copy: "Product strategy, scalable engineering and ongoing iteration from a team that understands SaaS economics.", items: ["Product Engineering", "Multi-tenant SaaS", "Billing", "Analytics", "Platform Security"], cta: "Build Your Platform" },
-};
-
-const tech = [
-  { name: "React", icon: SiReact, color: "#61dafb" },
-  { name: "Next.js", icon: SiNextdotjs, color: "#ffffff" },
-  { name: "Vue", icon: SiVuedotjs, color: "#42b883" },
-  { name: "Angular", icon: SiAngular, color: "#f15b64" },
-  { name: "Node.js", icon: SiNodedotjs, color: "#5fa04e" },
-  { name: "Python", icon: SiPython, color: "#ffd43b" },
-  { name: "Laravel", icon: SiLaravel, color: "#ff5a55" },
-  { name: "Java", icon: FaJava, color: "#f89820" },
-  { name: ".NET", icon: SiDotnet, color: "#9b6dff" },
-  { name: "Flutter", icon: SiFlutter, color: "#54c5f8" },
-  { name: "React Native", icon: SiReact, color: "#61dafb" },
-  { name: "AWS", icon: FaAws, color: "#ff9900" },
-  { name: "Azure", icon: VscAzure, color: "#45aaf2" },
-  { name: "Google Cloud", icon: SiGooglecloud, color: "#4285f4" },
-  { name: "Cloudflare", icon: SiCloudflare, color: "#f48120" },
-  { name: "Docker", icon: SiDocker, color: "#2496ed" },
-  { name: "Kubernetes", icon: SiKubernetes, color: "#5c82e7" },
-  { name: "PostgreSQL", icon: SiPostgresql, color: "#5c8db7" },
-  { name: "MongoDB", icon: SiMongodb, color: "#47a248" },
-  { name: "Redis", icon: SiRedis, color: "#ff5a5f" },
-  { name: "GitHub", icon: SiGithub, color: "#ffffff" },
-  { name: "Figma", icon: SiFigma, color: "#f24e1e" },
-  { name: "OpenAI", icon: TbBrandOpenai, color: "#ffffff" },
+const capabilities = [
+  {
+    name: "Websites & online stores",
+    title: "Help customers choose.\nMake action easy.",
+    description:
+      "Help people understand your offer, trust your business and take the next step. We bring clarity to the journeys that turn interest into customers.",
+    items: [
+      "Business websites & landing pages",
+      "Online stores & customer journeys",
+      "Booking & enquiry experiences",
+      "Clear messaging & mobile design",
+    ],
+    label: "An example of a booking experience built around a restaurant.",
+  },
+  {
+    name: "Custom software",
+    title: "Software that fits\nthe way you work.",
+    description:
+      "Give your business software it can rely on. We connect your systems, remove technical bottlenecks and build a foundation your team can keep improving.",
+    items: [
+      "Customer portals & business apps",
+      "Dashboards & internal tools",
+      "Connected business systems",
+      "Performance & reliable releases",
+    ],
+    label: "An example of court availability and player bookings.",
+  },
+  {
+    name: "AI & automation",
+    title: "Less busywork.\nMore possibility.",
+    description:
+      "Give your team more time for the work that needs them. We connect knowledge and automate repetitive steps, with clear boundaries and people in control.",
+    items: [
+      "Find answers in company documents",
+      "Prepare repetitive tasks automatically",
+      "Connect information across your tools",
+      "Keep people in control of decisions",
+    ],
+    label: "A first conversation, with a clear route to your team.",
+  },
 ];
-
-const valueProps = [
-  { label: "Build faster", title: "Turn ideas into production-ready digital products.", copy: "A connected design and engineering workflow keeps decisions moving and quality high.", icon: SquareTerminal, type: "build", stat: "3.2×", statLabel: "faster delivery" },
-  { label: "Stay secure", title: "Security built into every layer of your technology.", copy: "Continuous monitoring, practical hardening and clear visibility protect what matters.", icon: LockKeyhole, type: "secure", stat: "0", statLabel: "critical issues" },
-  { label: "Scale confidently", title: "Infrastructure designed to grow with your business.", copy: "Elastic cloud architecture handles demand efficiently—from your first customer to your millionth.", icon: TrendingUp, type: "scale", stat: "99.99%", statLabel: "uptime target" },
-  { label: "Automate intelligently", title: "Use AI to eliminate repetitive work.", copy: "Human-centered automation turns your processes into fast, dependable intelligent workflows.", icon: Bot, type: "automate", stat: "40h", statLabel: "saved weekly" },
-];
-
-const cases = [
-  { category: "COMMERCE", title: "Scaling a high-growth marketplace", result: "+45%", resultLabel: "conversion rate", tags: ["Next.js", "Stripe", "AWS"], theme: "violet", chart: [24, 39, 34, 52, 46, 68, 62, 84] },
-  { category: "B2B SAAS", title: "One operating system for field teams", result: "10K+", resultLabel: "active users", tags: ["React", "Node.js", "PostgreSQL"], theme: "blue", chart: [20, 25, 32, 31, 48, 58, 72, 91] },
-  { category: "ARTIFICIAL INTELLIGENCE", title: "Support that learns with every answer", result: "60%", resultLabel: "fewer manual requests", tags: ["OpenAI", "Python", "React"], theme: "pink", chart: [18, 36, 29, 48, 57, 62, 78, 86] },
-];
-
-const testimonials = [
-  { quote: "NEXORA transformed our idea into a complete digital platform. Their team handled design, development, infrastructure and launch seamlessly.", name: "Maya Chen", role: "CEO, Orbit Labs", initials: "MC", color: "purple" },
-  { quote: "They simplified a complex cloud migration and improved our reliability from day one. We finally feel ready for the next stage of growth.", name: "Omar Haddad", role: "COO, Northstar Commerce", initials: "OH", color: "blue" },
-  { quote: "The rare technology partner who understands both the boardroom and the codebase. Every decision was tied to a real business result.", name: "Elena Rossi", role: "VP Digital, Atlas Group", initials: "ER", color: "pink" },
-];
-
 const faqs = [
-  ["What IT services do you provide?", "We provide end-to-end strategy, UI/UX, web and mobile development, custom software, cloud, DevOps, cybersecurity, AI automation and managed IT support."],
-  ["Can you handle an entire project from design to deployment?", "Yes. Our cross-functional team can own discovery, architecture, experience design, engineering, testing, launch and ongoing optimization."],
-  ["Do you work with startups?", "Absolutely. We help founders validate ideas, design MVPs, choose sensible architecture and build a foundation that can scale after launch."],
-  ["Can you modernize existing software?", "Yes. We audit your current systems, prioritize risk and value, then modernize incrementally to protect business continuity."],
-  ["Do you provide ongoing support?", "Yes. Our managed IT and product support plans cover maintenance, monitoring, security, optimization and feature development."],
-  ["Can you work with our internal development team?", "Yes. We can embed a dedicated team, fill specialist gaps or take ownership of a defined workstream alongside your team."],
-  ["Do you provide cybersecurity services?", "Yes. Services include security audits, penetration testing, vulnerability assessment, hardening and continuous monitoring."],
-  ["Can you integrate AI into our business?", "Yes. We identify valuable use cases, prototype safely and build production AI agents, LLM integrations, chatbots and automated workflows."],
-  ["How much does a project cost?", "It depends on scope, complexity and team shape. After a free consultation, we provide a transparent estimate with clear deliverables and milestones."],
-  ["How long does a typical project take?", "Focused projects can launch in 4–8 weeks, while larger platforms typically take 3–6 months. We define a realistic roadmap before work begins."],
+  [
+    "What can you help my business improve?",
+    "We build business websites, online stores, custom software and useful automation. You can start with a goal—more enquiries, easier bookings, less manual work or a new product—and we’ll help define the right solution.",
+  ],
+  [
+    "How much does a project cost?",
+    "Cost depends on the scope, content, integrations and level of support. We discuss your priorities first, then propose a scope and estimate before work begins. For an existing website, a focused improvement may be more appropriate than a full rebuild.",
+  ],
+  [
+    "How long will it take?",
+    "We agree on a timeline after understanding the scope and what is already available. Content, feedback and integrations all affect delivery. Your proposal sets out milestones and responsibilities so you know what to expect.",
+  ],
+  [
+    "Can you improve our existing website or software?",
+    "Yes. We can review what you have, identify the main obstacles and prioritize improvements. We only recommend rebuilding when the existing foundation makes the agreed goal impractical.",
+  ],
+  [
+    "Do we own the website and code?",
+    "Access, source code, intellectual property and any third-party licences are addressed in the proposal before you commit. The handover plan explains what you receive and how your team can operate the work.",
+  ],
+  [
+    "Can you help with content and work with our team?",
+    "Yes. We can help clarify the message and structure the customer journey, then agree on responsibility for writing, imagery and translations. We can also work alongside your existing designers, developers or marketing team.",
+  ],
+  [
+    "What happens after I contact you?",
+    "We review your business goal and contact you to understand the situation. Then we discuss the right approach and prepare a proposal when there is a fit. Sending an enquiry does not commit you to a project.",
+  ],
+  [
+    "What happens after launch?",
+    "We agree on documentation, handover and support before launch. Depending on your needs, that can include maintenance, training or ongoing improvements. You will know what is included and what is optional.",
+  ],
 ];
 
-const fade = { hidden: { opacity: 0, y: 24 }, visible: { opacity: 1, y: 0 } };
-
-function SectionHeading({ eyebrow, title, copy, light = false }: { eyebrow: string; title: string; copy?: string; light?: boolean }) {
+function Brand({ large = false }: { large?: boolean }) {
   return (
-    <motion.div className={`section-heading ${light ? "light" : ""}`} variants={fade} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-80px" }} transition={{ duration: .65 }}>
-      <span className="eyebrow"><Sparkles size={14} />{eyebrow}</span>
-      <h2>{title}</h2>
-      {copy && <p>{copy}</p>}
-    </motion.div>
+    <span className={`brand-lockup ${large ? "large" : ""}`}>
+      <svg viewBox="0 0 44 34" fill="none" aria-hidden="true">
+        <path
+          d="M3 29 31 5M3 5l28 24M17 17h24"
+          stroke="currentColor"
+          strokeWidth="2.6"
+          strokeLinecap="round"
+        />
+      </svg>
+      <span>
+        Dwx<span className="brand-agency"> Agency</span>
+      </span>
+    </span>
   );
 }
-
-function Counter({ value, suffix = "" }: { value: number; suffix?: string }) {
-  const ref = useRef<HTMLSpanElement>(null);
-  const inView = useInView(ref, { once: true });
-  const [count, setCount] = useState(0);
-  useEffect(() => {
-    if (!inView) return;
-    let frame = 0;
-    const total = 48;
-    const timer = window.setInterval(() => {
-      frame += 1;
-      setCount(Math.round(value * (1 - Math.pow(1 - frame / total, 3))));
-      if (frame >= total) window.clearInterval(timer);
-    }, 24);
-    return () => window.clearInterval(timer);
-  }, [inView, value]);
-  return <span ref={ref}>{count}{suffix}</span>;
+function LinkButton({
+  children,
+  href,
+  secondary = false,
+  onClick,
+}: {
+  children: React.ReactNode;
+  href: string;
+  secondary?: boolean;
+  onClick?: () => void;
+}) {
+  return (
+    <a
+      className={`pill ${secondary ? "secondary" : "luminous-button"}`}
+      href={href}
+      onClick={onClick}
+    >
+      <span className="pill-label">{children}</span>
+      <ArrowUpRight size={17} />
+    </a>
+  );
 }
-
-function VisualPanel({ type }: { type: string }) {
-  if (type === "secure") return <div className="mini-ui security-ui"><div className="ui-top"><span>Security posture</span><span className="status"><i/>Protected</span></div><div className="shield-orbit"><div className="orbit o1"/><div className="orbit o2"/><ShieldCheck size={52}/></div><div className="risk-grid">{["Endpoints", "Cloud", "Identity"].map((x, i) => <div key={x}><i className={`risk r${i}`}/><span>{x}</span><b>{[98, 100, 96][i]}%</b></div>)}</div></div>;
-  if (type === "scale") return <div className="mini-ui scale-ui"><div className="ui-top"><span>Global infrastructure</span><span>Live</span></div><div className="node-map"><div className="map-line l1"/><div className="map-line l2"/>{["us", "eu", "ap", "af"].map((x, i) => <span className={`map-node ${x}`} key={x}><i/>{["US", "EU", "APAC", "AFR"][i]}</span>)}</div><div className="scale-stats"><div><small>Requests</small><b>8.4M</b></div><div><small>Latency</small><b>42ms</b></div><div><small>Uptime</small><b>99.99%</b></div></div></div>;
-  if (type === "automate") return <div className="mini-ui automate-ui"><div className="ui-top"><span>Customer onboarding</span><span className="status"><i/>Running</span></div><div className="workflow-row"><span className="flow-node purple"><Database size={19}/><i>Trigger</i></span><b/><span className="flow-node blue"><BrainCircuit size={19}/><i>AI analyze</i></span><b/><span className="flow-node pink"><Send size={19}/><i>Route</i></span></div><div className="run-row"><span>Latest run</span><div className="run-progress"><i/></div><b>2.4s</b></div></div>;
-  return <div className="mini-ui build-ui"><div className="ui-top"><span>Product velocity</span><span>This month</span></div><div className="sprint-grid"><div className="task-list">{["Auth flow", "Billing API", "Team spaces"].map((x, i) => <div key={x}><span className={`task-dot d${i}`}/><b>{x}</b><i>{["Done", "Review", "Build"][i]}</i></div>)}</div><div className="velocity-chart"><div className="chart-line"/>{[25,42,36,58,49,74,86].map((n,i)=><i key={i} style={{height:`${n}%`}}/>)}</div></div><div className="commit-pill"><Code2 size={15}/> 24 releases shipped</div></div>;
-}
-
-function App() {
-  const reduceMotion = useReducedMotion();
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [showMobileCta, setShowMobileCta] = useState(false);
-  const [contactInView, setContactInView] = useState(false);
-  const contactRef = useRef<HTMLElement>(null);
-  const [activeSolution, setActiveSolution] = useState<keyof typeof solutions>("Startups");
-  const [openFaq, setOpenFaq] = useState(0);
-  const [testimonial, setTestimonial] = useState(0);
-  const [formSent, setFormSent] = useState(false);
-  const current = solutions[activeSolution];
+export default function Home() {
+  const reduced = useReducedMotion();
+  const [word, setWord] = useState(0);
+  const [mobile, setMobile] = useState(false);
+  const [menu, setMenu] = useState(false);
+  const [menuPreview, setMenuPreview] = useState(0);
+  const [heroTab, setHeroTab] = useState(0);
+  const [service, setService] = useState(0);
+  const [faq, setFaq] = useState(-1);
+  const menuClose = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [motionPaused, setMotionPaused] = useState(false);
+  const [growthPath, setGrowthPath] = useState(0);
+  const [growthOpen, setGrowthOpen] = useState(false);
+  const [contactVisible, setContactVisible] = useState(false);
+  const [briefRevision, setBriefRevision] = useState(0);
+  const growthTrigger = useRef<HTMLButtonElement>(null);
+  const suggestedMessage = useRef<string | null>(null);
+  const [brief, setBrief] = useState({
+    name: "",
+    email: "",
+    focus: "Something else",
+    message: "",
+    website: "",
+  });
+  const words = ["simpler.", "smarter.", "stronger."];
   useEffect(() => {
-    if (reduceMotion) return;
-    const id = window.setInterval(() => setTestimonial(v => (v + 1) % testimonials.length), 6500);
-    return () => window.clearInterval(id);
-  }, [reduceMotion]);
+    if (reduced || motionPaused) return;
+    const timer = setInterval(() => {
+      if (!document.hidden) setWord((x) => (x + 1) % 3);
+    }, 3800);
+    return () => clearInterval(timer);
+  }, [reduced, motionPaused]);
   useEffect(() => {
-    const updateCta = () => setShowMobileCta(window.scrollY > 180);
-    updateCta();
-    window.addEventListener("scroll", updateCta, { passive: true });
-    return () => window.removeEventListener("scroll", updateCta);
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setMobile(false);
+        setMenu(false);
+        setGrowthOpen(false);
+      }
+    };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
   }, []);
   useEffect(() => {
-    const contact = contactRef.current;
-    if (!contact) return;
-    const observer = new IntersectionObserver(([entry]) => setContactInView(entry.isIntersecting), { threshold: .08 });
-    observer.observe(contact);
+    const outside = (e: MouseEvent) => {
+      if (!(e.target as Element).closest(".nav-dropdown")) setMenu(false);
+    };
+    document.addEventListener("click", outside);
+    return () => document.removeEventListener("click", outside);
+  }, []);
+  useEffect(() => {
+    const actionAreas = [
+      document.getElementById("contact"),
+      document.getElementById("review"),
+      document.querySelector<HTMLElement>(".hero-actions"),
+    ].filter((area): area is HTMLElement => Boolean(area));
+    const visible = new Set<Element>();
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) =>
+          entry.isIntersecting
+            ? visible.add(entry.target)
+            : visible.delete(entry.target),
+        );
+        setContactVisible(visible.size > 0);
+      },
+      { threshold: 0 },
+    );
+    actionAreas.forEach((area) => observer.observe(area));
     return () => observer.disconnect();
   }, []);
-  const submit = (e: FormEvent<HTMLFormElement>) => { e.preventDefault(); setFormSent(true); };
-
+  useEffect(() => {
+    if (!growthOpen) return;
+    const trigger = growthTrigger.current;
+    const panel = document.getElementById("growth-dialog");
+    panel?.querySelector<HTMLElement>("button")?.focus();
+    const outside = (event: PointerEvent) => {
+      const target = event.target as Element;
+      if (
+        !target.closest(".growth-dock") &&
+        !target.closest(".growth-nav-trigger")
+      )
+        setGrowthOpen(false);
+    };
+    document.addEventListener("pointerdown", outside);
+    return () => {
+      document.removeEventListener("pointerdown", outside);
+      trigger?.focus({ preventScroll: true });
+    };
+  }, [growthOpen]);
+  const startBrief = (focus: string, suggestion: string) => {
+    const form = document.querySelector<HTMLFormElement>(".contact-form form");
+    const values = form ? new FormData(form) : null;
+    const currentMessage = values
+      ? String(values.get("message") || "")
+      : brief.message;
+    const useSuggestion =
+      !currentMessage || currentMessage === suggestedMessage.current;
+    if (useSuggestion) suggestedMessage.current = suggestion;
+    setBrief({
+      name: values ? String(values.get("name") || "") : brief.name,
+      email: values ? String(values.get("email") || "") : brief.email,
+      focus,
+      website: values ? String(values.get("website") || "") : brief.website,
+      message: useSuggestion ? suggestion : currentMessage,
+    });
+    setBriefRevision((value) => value + 1);
+    setGrowthOpen(false);
+  };
+  const startGrowthBrief = () =>
+    startBrief(growthPaths[growthPath].focus, growthPaths[growthPath].brief);
+  const chooseService = (i: number) => {
+    setService(i);
+    setMenu(false);
+    setMobile(false);
+  };
   return (
-    <main>
-      <nav className="nav-shell" aria-label="Main navigation">
-        <a className="brand" href="#top" aria-label="NEXORA IT home"><span className="brand-mark"><i/><i/><i/></span><b>NEXORA</b><small>IT</small></a>
-        <div className="nav-links">{["Services", "Solutions", "Work", "Process", "Resources"].map(link => <a href={`#${link.toLowerCase()}`} key={link}>{link}</a>)}</div>
-        <div className="nav-actions"><a className="btn btn-quiet" href="#contact">Let’s Talk</a><a className="btn btn-primary small" href="#contact">Start a Project <ArrowRight size={16}/></a></div>
-        <button className="menu-btn" onClick={() => setMenuOpen(!menuOpen)} aria-label="Toggle navigation" aria-expanded={menuOpen}>{menuOpen ? <X/> : <Menu/>}</button>
-        <AnimatePresence>{menuOpen && <motion.div className="mobile-menu" initial={{opacity:0,y:-12}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-12}}>{["Services", "Solutions", "Work", "Process", "Resources"].map(link => <a onClick={() => setMenuOpen(false)} href={`#${link.toLowerCase()}`} key={link}>{link}<ArrowRight size={17}/></a>)}<a className="btn btn-primary" href="#contact">Start a Project</a></motion.div>}</AnimatePresence>
-      </nav>
-
-      <AnimatePresence>
-        {showMobileCta && !contactInView && !menuOpen && <motion.a className="mobile-scroll-cta" href="#contact" aria-label="Start a project" initial={{opacity:0,y:24,scale:.97}} animate={{opacity:1,y:0,scale:1}} exit={{opacity:0,y:18,scale:.97}} transition={{duration:.24,ease:"easeOut"}}>Start a Project <ArrowRight size={15}/></motion.a>}
-      </AnimatePresence>
-
-      <section className="hero" id="top">
-        <div className="hero-aurora a1"/><div className="hero-aurora a2"/><div className="hero-grid"/>
-        <motion.div className="hero-copy" initial="hidden" animate="visible" variants={{visible:{transition:{staggerChildren:.1}}}}>
-          <motion.div variants={fade} className="announcement"><span>⚡</span> Your all-in-one IT partner <i>New</i></motion.div>
-          <motion.p variants={fade} className="overline">WE BUILD. WE SECURE. WE SCALE.</motion.p>
-          <motion.h1 variants={fade}>Everything your business needs to <span>build, secure &amp; scale.</span></motion.h1>
-          <motion.p variants={fade} className="hero-sub">From websites and software to cloud, cybersecurity and AI — we design and deliver technology solutions that move businesses forward.</motion.p>
-          <motion.div variants={fade} className="hero-actions"><a className="btn btn-primary large" href="#contact">Start a Project <ArrowRight size={18}/></a><a className="btn btn-secondary large" href="#services"><Play size={16} fill="currentColor"/> Explore Our Services</a></motion.div>
-          <motion.div variants={fade} className="trust-points">{["Free consultation", "Fast response", "Flexible solutions"].map(x=><span key={x}><Check size={15}/>{x}</span>)}</motion.div>
-        </motion.div>
-      </section>
-
-      <section className="trust-section" aria-label="Trusted by ambitious companies">
-        <p>TECHNOLOGY TRUSTED BY AMBITIOUS BUSINESSES</p>
-        <div className="logo-marquee"><div>{["MONO", "ARCWAY", "NORTHSTAR", "KINETIC", "VERDANT", "SFERA", "MONO", "ARCWAY", "NORTHSTAR", "KINETIC", "VERDANT", "SFERA"].map((x,i)=><span key={`${x}${i}`}><i/>{x}</span>)}</div></div>
-        <div className="metrics">{[[50,"+","Projects delivered"],[20,"+","Technologies"],[99,"%","Client satisfaction"],[24,"/7","Support available"]].map(([n,s,l])=><div key={String(l)}><strong><Counter value={Number(n)} suffix={String(s)}/></strong><span>{l}</span></div>)}</div>
-      </section>
-
-      <section className="section services-section" id="services">
-        <SectionHeading eyebrow="One connected team" title="One agency. Every IT service you need." copy="Stop managing multiple vendors. We bring your digital technology under one expert team." />
-        <div className="bento-grid">{services.map(({icon:Icon,tone,title,copy,tags}, i)=><motion.article key={title} className="service-card" variants={fade} initial="hidden" whileInView="visible" viewport={{once:true,margin:"-40px"}} transition={{delay:(i%3)*.08}}><div className={`service-icon ${tone}`}><Icon size={22}/></div><h3>{title}</h3><p>{copy}</p><div className="tag-list">{tags.map(t=><span key={t}>{t}</span>)}</div><a href="#contact" aria-label={`Explore ${title}`}>Explore <ArrowRight size={16}/></a><div className="card-glow"/></motion.article>)}</div>
-      </section>
-
-      <section className="section solutions-section" id="solutions">
-        <SectionHeading eyebrow="Solutions by business need" title="Technology built around your next move." copy="Choose your stage. We’ll bring the strategy, specialists and systems to move you forward."/>
-        <div className="solution-tabs" role="tablist">{Object.keys(solutions).map(k=><button role="tab" aria-selected={activeSolution===k} key={k} onClick={()=>setActiveSolution(k as keyof typeof solutions)}>{k}</button>)}</div>
-        <AnimatePresence mode="wait"><motion.div className="solution-panel" key={activeSolution} initial={{opacity:0,y:14}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-10}} transition={{duration:.35}}><div className="solution-copy"><span className="solution-icon"><current.icon size={25}/></span><small>{current.eyebrow}</small><h3>{current.title}</h3><p>{current.copy}</p><a className="btn btn-dark" href="#contact">{current.cta}<ArrowRight size={17}/></a></div><div className="solution-list"><span>WHAT WE’LL DELIVER</span>{current.items.map((x,i)=><motion.div key={x} initial={{opacity:0,x:20}} animate={{opacity:1,x:0}} transition={{delay:.1+i*.06}}><i>{String(i+1).padStart(2,"0")}</i><b>{x}</b><CircleCheck size={19}/></motion.div>)}</div></motion.div></AnimatePresence>
-      </section>
-
-      <section className="tech-section" id="resources"><div className="section"><SectionHeading light eyebrow="Modern by default" title="Built with technology that scales." copy="Battle-tested platforms. The right tool for every job. No trend-chasing, no lock-in."/><div className="tech-cloud">{tech.map(({name,icon:Icon,color},i)=><motion.span key={name} initial={{opacity:0,scale:.85}} whileInView={{opacity:1,scale:1}} viewport={{once:true}} transition={{delay:(i%8)*.045}}><Icon className="tech-logo" style={{color}} aria-hidden="true"/>{name}</motion.span>)}</div></div></section>
-
-      <section className="section value-section">
-        <SectionHeading eyebrow="Outcomes, not output" title="Move faster. Stay safer. Scale smarter." copy="Every part of your technology works better when it is designed as one connected system."/>
-        <div className="value-stack">{valueProps.map(({label,title,copy,icon:Icon,type,stat,statLabel},i)=><motion.article className={`value-row ${i%2?"reverse":""}`} key={label} initial={{opacity:0,y:35}} whileInView={{opacity:1,y:0}} viewport={{once:true,margin:"-80px"}}><div className="value-copy"><span className="value-label"><Icon size={18}/>{label}</span><h3>{title}</h3><p>{copy}</p><div className="value-stat"><b>{stat}</b><span>{statLabel}</span></div><a href="#contact">See what’s possible <ArrowRight size={16}/></a></div><div className={`value-visual ${type}`}><div className="visual-glow"/><VisualPanel type={type}/></div></motion.article>)}</div>
-      </section>
-
-      <section className="process-section" id="process"><div className="section"><SectionHeading light eyebrow="Our process" title="From idea to launch — without the complexity." copy="A clear, collaborative path from your first conversation to long-term growth."/><div className="timeline">{[["Discovery","Understand goals, users and technical requirements."],["Strategy","Define architecture, technology and roadmap."],["Design","Create UX, interfaces and prototypes."],["Development","Build, test and optimize the solution."],["Launch & Scale","Deploy, monitor, maintain and improve."]].map(([t,c],i)=><motion.div className="step" key={t} initial={{opacity:0,y:20}} whileInView={{opacity:1,y:0}} viewport={{once:true}} transition={{delay:i*.1}}><div className="step-number">{String(i+1).padStart(2,"0")}</div><div className="step-line"><i/></div><h3>{t}</h3><p>{c}</p></motion.div>)}</div></div></section>
-
-      <section className="section work-section" id="work">
-        <SectionHeading eyebrow="Selected work" title="Technology that creates real business impact." copy="A glimpse at the platforms, systems and experiences we build for ambitious teams."/>
-        <div className="case-grid">{cases.map(({category,title,result,resultLabel,tags,theme,chart})=><article className={`case-card ${theme}`} key={title}><div className="case-top"><span>{category}</span><a href="#contact" aria-label={`Read ${title} case study`}><ArrowRight/></a></div><h3>{title}</h3><div className="case-result"><b>{result}</b><span>{resultLabel}</span></div><div className="case-dashboard"><div className="dash-nav"><i/><i/><i/><span>Insights</span></div><div className="dash-content"><div className="dash-metrics"><span><small>Growth</small><b>{result}</b></span><span><small>Performance</small><b>Excellent</b></span></div><div className="case-chart">{chart.map((n,i)=><i key={i} style={{height:`${n}%`}}/>)}</div></div></div><div className="case-tags">{tags.map(t=><span key={t}>{t}</span>)}</div></article>)}</div>
-      </section>
-
-      <section className="why-section"><div className="section"><SectionHeading eyebrow="Why NEXORA" title="More than developers. Your technology partner." copy="Senior expertise, commercial thinking and a team that stays accountable after launch."/><div className="why-grid">{[[Layers3,"Full-Service Expertise","Everything from strategy and design to infrastructure."],[TrendingUp,"Business-First Approach","Technology decisions based on measurable outcomes."],[Boxes,"Scalable Architecture","Solutions designed for your next stage of growth."],[ShieldCheck,"Security by Design","Protection integrated from the first decision."],[Users,"Transparent Communication","Clear ownership and updates throughout every project."],[LifeBuoy,"Long-Term Support","A partner who keeps improving after launch."]].map(([Icon,t,c],i)=><motion.article key={String(t)} initial={{opacity:0,y:18}} whileInView={{opacity:1,y:0}} viewport={{once:true}} transition={{delay:i*.07}}><span>{typeof Icon !== "string" && <Icon size={21}/>}</span><h3>{String(t)}</h3><p>{String(c)}</p></motion.article>)}</div></div></section>
-
-      <section className="testimonial-section"><div className="section testimonial-layout"><div><span className="eyebrow"><Quote size={14}/> Client stories</span><h2>Trusted where the stakes are high.</h2><div className="rating"><span>{[1,2,3,4,5].map(x=><Star key={x} size={16} fill="currentColor"/>)}</span><b>4.9/5 average client rating</b></div></div><div className="testimonial-card"><Quote className="big-quote"/><AnimatePresence mode="wait"><motion.div key={testimonial} initial={{opacity:0,x:20}} animate={{opacity:1,x:0}} exit={{opacity:0,x:-20}}><blockquote>“{testimonials[testimonial].quote}”</blockquote><div className="person"><span className={testimonials[testimonial].color}>{testimonials[testimonial].initials}</span><div><b>{testimonials[testimonial].name}</b><small>{testimonials[testimonial].role}</small></div></div></motion.div></AnimatePresence><div className="testimonial-dots">{testimonials.map((_,i)=><button key={i} className={testimonial===i?"active":""} onClick={()=>setTestimonial(i)} aria-label={`View testimonial ${i+1}`}/>)}</div></div></div></section>
-
-      <section className="section engagement-section"><SectionHeading eyebrow="Flexible engagement" title="Work with us your way." copy="Choose the model that fits your goals, timeline and internal capabilities."/><div className="engagement-grid">{[["Project-Based","Best for clearly defined products, migrations and transformation initiatives.","Start a Project"],["Dedicated Team","Experienced designers and engineers, integrated with your business.","Build Your Team"],["Managed IT","Ongoing infrastructure, security, maintenance and technical support.","Talk to an Expert"]].map(([t,c,a],i)=>{ const EngageIcon = [Rocket,Users,LifeBuoy][i]; return <article className={i===1?"popular":""} key={t}>{i===1&&<span className="popular-label">MOST POPULAR</span>}<div className="engage-icon"><EngageIcon size={23}/></div><h3>{t}</h3><p>{c}</p><ul>{[["Defined scope","Milestone delivery","Senior project team"],["Flexible capacity","Specialist expertise","Direct collaboration"],["Proactive monitoring","Priority support","Continuous improvement"]][i].map(x=><li key={x}><Check size={15}/>{x}</li>)}</ul><a className={`btn ${i===1?"btn-primary":"btn-secondary"}`} href="#contact">{a}<ArrowRight size={16}/></a></article>; })}</div></section>
-
-      <section className="section faq-section"><div className="faq-intro"><span className="eyebrow"><Sparkles size={14}/> Questions, answered</span><h2>Everything you need to know.</h2><p>Can’t find what you’re looking for?</p><a href="#contact">Talk to our team <ArrowRight size={15}/></a></div><div className="faq-list">{faqs.map(([q,a],i)=><div className={`faq-item ${openFaq===i?"open":""}`} key={q}><button onClick={()=>setOpenFaq(openFaq===i?-1:i)} aria-expanded={openFaq===i}><span>{q}</span><ChevronDown size={20}/></button><AnimatePresence initial={false}>{openFaq===i&&<motion.div initial={{height:0,opacity:0}} animate={{height:"auto",opacity:1}} exit={{height:0,opacity:0}}><p>{a}</p></motion.div>}</AnimatePresence></div>)}</div></section>
-
-      <section ref={contactRef} className="contact-section" id="contact"><div className="contact-glow g1"/><div className="contact-glow g2"/><div className="section contact-layout"><div className="contact-copy"><span className="eyebrow dark"><Sparkles size={14}/> Start something powerful</span><h2>Have an idea?<br/><span>Let’s build it.</span></h2><p>Tell us what you want to create. Our technology team will help turn it into a clear plan—and then into reality.</p><div className="contact-promise">{["Free, no-pressure consultation","A senior expert responds within 24 hours","Clear scope, timeline and next steps"].map(x=><span key={x}><CircleCheck size={18}/>{x}</span>)}</div></div><div className="contact-card">{formSent?<motion.div className="form-success" initial={{opacity:0,scale:.95}} animate={{opacity:1,scale:1}}><span><Check size={32}/></span><h3>Your project is on our radar.</h3><p>Thanks for reaching out. A NEXORA specialist will contact you within one business day.</p><button onClick={()=>setFormSent(false)} className="btn btn-secondary">Send another enquiry</button></motion.div>:<form onSubmit={submit}><div className="form-head"><h3>Tell us about your project</h3><p>We’ll get back to you within 24 hours.</p></div><div className="form-grid"><label>Name<input required name="name" placeholder="Your name"/></label><label>Company<input name="company" placeholder="Company name"/></label><label>Email<input required name="email" type="email" placeholder="you@company.com"/></label><label>Phone<input name="phone" type="tel" placeholder="+1 234 567 890"/></label><label>Service needed<select required defaultValue=""><option value="" disabled>Select a service</option>{["Web Development","Mobile App","Custom Software","Cybersecurity","Cloud / DevOps","AI & Automation","IT Support","UI/UX","Other"].map(x=><option key={x}>{x}</option>)}</select></label><label>Estimated budget<select required defaultValue=""><option value="" disabled>Select a range</option>{["Under $5K","$5K–$15K","$15K–$30K","$30K–$50K","$50K+"].map(x=><option key={x}>{x}</option>)}</select></label><label className="full">Project description<textarea required rows={4} placeholder="What are you looking to build or improve?"/></label></div><button className="btn btn-primary submit" type="submit">Let’s Build It <Send size={17}/></button><small className="privacy-note">By submitting, you agree to our privacy policy. No spam—ever.</small></form>}</div></div></section>
-
-      <footer><div className="section footer-top"><div className="footer-brand"><a className="brand" href="#top"><span className="brand-mark"><i/><i/><i/></span><b>NEXORA</b><small>IT</small></a><p>Your all-in-one technology partner for building, securing and scaling what’s next.</p><div className="socials">{[Users,Code2,Star,X].map((Icon,i)=><a href="#top" aria-label={["LinkedIn","GitHub","Instagram","X"][i]} key={i}><Icon size={17}/></a>)}</div></div>{[["Services","Web Development","Mobile Development","Software Development","UI/UX Design","Cybersecurity","Cloud & DevOps","AI & Automation"],["Solutions","Startups","SMEs","Agencies","E-commerce","SaaS"],["Company","About","Work","Process","Careers","Contact"],["Resources","Blog","Case Studies","FAQ","Insights"]].map(([title,...links])=><div className="footer-col" key={title}><b>{title}</b>{links.map(x=><a href={x==="Contact"?"#contact":"#top"} key={x}>{x}</a>)}</div>)}</div><div className="footer-bottom"><span>© {new Date().getFullYear()} NEXORA IT. All rights reserved.</span><div><a href="#top">Privacy Policy</a><a href="#top">Terms</a><a href="#top">Cookies</a></div><a href="#top">Back to top ↑</a></div></footer>
-    </main>
+    <MotionRuntime paused={motionPaused}>
+      <main
+        className={motionPaused ? "motion-paused" : ""}
+        onClick={(event) => {
+          if (
+            event.button !== 0 ||
+            event.metaKey ||
+            event.ctrlKey ||
+            event.altKey ||
+            event.shiftKey
+          )
+            return;
+          const anchor = (event.target as Element).closest<HTMLAnchorElement>(
+            "a[href^='#']",
+          );
+          const href = anchor?.getAttribute("href");
+          const destination = href
+            ? document.getElementById(href.slice(1))
+            : null;
+          if (!href || !destination) return;
+          event.preventDefault();
+          event.stopPropagation();
+          if (window.location.hash !== href)
+            window.history.pushState(window.history.state, "", href);
+          requestAnimationFrame(() =>
+            destination.scrollIntoView({
+              behavior: reduced ? "auto" : "smooth",
+              block: "start",
+            }),
+          );
+        }}
+      >
+        <a className="skip-link" href="#content">
+          Skip to content
+        </a>
+        <LeadTracking />
+        <header className="site-header">
+          <nav className="nav-shell shell" aria-label="Main navigation">
+            <a href="#top" aria-label="Dwx Agency home">
+              <Brand />
+            </a>
+            <div className="desktop-nav">
+              <div className="nav-dropdown"
+                onPointerEnter={e=>{if(e.pointerType!=="mouse")return;if(menuClose.current)clearTimeout(menuClose.current);setMenu(true);}}
+                onPointerLeave={e=>{if(e.pointerType!=="mouse")return;menuClose.current=setTimeout(()=>setMenu(false),160);}}
+                onFocus={()=>{if(menuClose.current)clearTimeout(menuClose.current);setMenu(true);}}
+                onBlur={e=>{if(!e.currentTarget.contains(e.relatedTarget as Node))setMenu(false);}}
+              >
+                <button
+                  className={menu ? "nav-active" : ""}
+                  onClick={() => setMenu(true)}
+                  aria-expanded={menu}
+                  aria-controls="capability-menu"
+                >
+                  Services
+                  <ChevronDown size={14} />
+                </button>
+                <AnimatePresence>
+                  {menu && (
+                    <motion.div
+                      id="capability-menu"
+                      className="mega-menu"
+                      initial={{ opacity: 0, y: 8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: 5 }}
+                      transition={{ duration: 0.18 }}
+                    >
+                      <div className="mega-options">
+                        {capabilities.map((x, i) => (
+                          <a
+                            key={x.name}
+                            href="#services"
+                            className={menuPreview === i ? "selected" : ""}
+                            onMouseEnter={() => setMenuPreview(i)}
+                            onFocus={() => setMenuPreview(i)}
+                            onClick={() => chooseService(i)}
+                          >
+                            <b>{x.name}</b>
+                            <span>
+                              {
+                                [
+                                  "Experiences that make sense.",
+                                  "Software that goes the distance.",
+                                  "AI that moves work forward.",
+                                ][i]
+                              }
+                            </span>
+                          </a>
+                        ))}
+                        <a href="#review" className={menuPreview===3?"selected":""} onMouseEnter={()=>setMenuPreview(3)} onFocus={()=>setMenuPreview(3)} onClick={() => setMenu(false)}>
+                          <b>Website review</b>
+                          <span>Find what could be working better.</span>
+                        </a>
+                      </div>
+                      <div className={`mega-preview preview-${menuPreview}`}>
+                        <AnimatePresence mode="wait">
+                          <motion.div
+                            className="mega-live-preview"
+                            key={menuPreview}
+                            initial={
+                              reduced
+                                ? false
+                                : { opacity: 0, y: 10, scale: 0.98 }
+                            }
+                            animate={{ opacity: 1, y: 0, scale: 1 }}
+                            exit={{ opacity: 0, y: -8, scale: 0.98 }}
+                            transition={{ duration: 0.23 }}
+                          >
+                            {menuPreview === 0 ? (
+                              <DesignDemo />
+                            ) : menuPreview === 1 ? (
+                              <BuildDemo compact />
+                            ) : menuPreview === 2 ? (
+                              <AssistDemo />
+                            ) : <div className="menu-review-preview"><span className="eyebrow">A CLEARER NEXT STEP</span><h3>Your website should work as hard as you do.</h3><p>We review the message, mobile journey and path to enquiry, then discuss where to focus.</p><ul><li><Check size={15}/>Offer & clarity</li><li><Check size={15}/>Mobile experience</li><li><Check size={15}/>Customer actions</li></ul><a href="#review" onClick={()=>setMenu(false)}>Explore a website review<ArrowUpRight size={16}/></a></div>}
+                          </motion.div>
+                        </AnimatePresence>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+              <a href="#work">Solutions</a>
+              <a href="#assistant">Ask Dwx</a>
+              <a href="#review">Website review</a>
+              <a href="#stay-ahead">Stay ahead</a>
+              <a href="#about">Why Dwx</a>
+            </div>
+            <div className="nav-actions">
+              <button
+                className="growth-nav-trigger"
+                onClick={() => setGrowthOpen(true)}
+                aria-expanded={growthOpen}
+                aria-controls="growth-dialog"
+              >
+                Website not converting?
+              </button>
+              <LinkButton href="#contact">Discuss my business</LinkButton>
+            </div>
+            <button
+              className="menu-toggle"
+              onClick={() => setMobile((x) => !x)}
+              aria-label={mobile ? "Close menu" : "Open menu"}
+              aria-expanded={mobile}
+              aria-controls="mobile-menu"
+            >
+              {mobile ? <X /> : <Menu />}
+            </button>
+          </nav>
+          <AnimatePresence>
+            {mobile && (
+              <motion.div
+                className="mobile-menu"
+                id="mobile-menu"
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: "auto", opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+              >
+                {[
+                  ["Services", "services"],
+                  ["Business solutions", "work"],
+                  ["Ask Dwx Assist", "assistant"],
+                  ["Technologies", "technologies"],
+                  ["Website review", "review"],
+                  ["Stay ahead", "stay-ahead"],
+                  ["Approach", "process"],
+                  ["Why Dwx", "about"],
+                  ["Discuss my business", "contact"],
+                ].map(([label, id]) => (
+                  <a key={id} href={`#${id}`} onClick={() => setMobile(false)}>
+                    {label}
+                    <ArrowUpRight size={20} />
+                  </a>
+                ))}
+                <span>Casablanca. Working everywhere.</span>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </header>
+        <div id="content" />
+        <section className="hero shell" id="top">
+          <motion.div
+            className="hero-copy"
+            initial={reduced ? false : { opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <a href="#about" className="announcement">
+              <span>Casablanca, Morocco</span> Working worldwide
+              <ArrowUpRight size={14} />
+            </a>
+            <h1 aria-label="Win more customers. Make business simpler.">
+              Win more customers.
+              <br />
+              <span className="hero-line">
+                <span>Make business</span>
+                <span className="word-slot">
+                  <AnimatePresence mode="wait" initial={false}>
+                    <motion.span
+                      className={`hero-word word-${word}`}
+                      key={word}
+                      initial={
+                        reduced
+                          ? false
+                          : { opacity: 0, y: 14, filter: "blur(0px)" }
+                      }
+                      animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                      exit={
+                        reduced
+                          ? { opacity: 0 }
+                          : { opacity: 0, y: -12, filter: "blur(0px)" }
+                      }
+                      transition={{ duration: 0.45 }}
+                    >
+                      {words[word]}
+                      <span className="word-underline" aria-hidden="true" />
+                    </motion.span>
+                  </AnimatePresence>
+                </span>
+              </span>
+            </h1>
+            <p>
+              We build websites, online stores and software around what your
+              business needs: more enquiries, easier sales and less admin.
+            </p>
+            <div className="hero-actions">
+              <LinkButton href="#contact">Discuss my project</LinkButton>
+              <LinkButton href="#growth" secondary>
+                What can you do for me?
+              </LinkButton>
+            </div>
+          </motion.div>
+          <div className="hero-reassurance">
+            <span>
+              <Check size={14} />
+              Scope & cost before you commit
+            </span>
+            <span>
+              <Check size={14} />
+              New build or focused improvements
+            </span>
+          </div>
+          <ChoiceTabs
+            className="hero-demo-tabs"
+            label="Explore our capabilities"
+            prefix="hero-tab"
+            panel={(i) => `hero-demo-${i}`}
+            labels={["Restaurant", "Padel club", "Car rental"]}
+            selected={heroTab}
+            onSelect={setHeroTab}
+          />
+          <AnimatePresence mode="wait" initial={false}>
+            <motion.div
+              key={heroTab}
+              className="hero-deck"
+              aria-label="Interactive product explorations"
+              initial={reduced ? false : { opacity: 0, y: 14 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.3 }}
+            >
+              {[
+                <DesignDemo key="design" />,
+                <OperationsDemo key="build" />,
+                <RentalDemo key="rental" />,
+              ].map((demo, i) => (
+                <article
+                  key={i}
+                  id={`hero-demo-${i}`}
+                  className={`hero-demo demo-${i} ${heroTab === i ? "mobile-active" : ""}`}
+                  aria-labelledby={`hero-tab-${i}`}
+                >
+                  <div className="demo-surface">{demo}</div>
+                  <a href="#work">
+                    <span>
+                      {
+                        [
+                          "A calmer restaurant service",
+                          "A simpler way to book a court",
+                          "Your fleet, ready for the next booking",
+                        ][i]
+                      }
+                    </span>
+                    <ArrowUpRight size={17} />
+                  </a>
+                </article>
+              ))}
+            </motion.div>
+          </AnimatePresence>
+          <div className="hero-note">
+            <span>Interactive examples · Explore what’s possible</span>
+            <button
+              aria-label={
+                motionPaused
+                  ? "Resume live animations"
+                  : "Pause live animations"
+              }
+              onClick={() => setMotionPaused((x) => !x)}
+            >
+              {motionPaused ? "Play motion" : "Pause motion"}
+            </button>
+          </div>
+        </section>
+        <TrustStatement />
+        <BusinessOutcomes onRequest={startBrief} />
+        <IndustryShowcase onRequest={startBrief} />
+        <AssistantSection onRequest={startBrief} />
+        <section
+          className="capabilities-section shell section-pad"
+          id="services"
+        >
+          <Reveal className="section-heading">
+            <span className="eyebrow">WHAT YOUR BUSINESS CAN GET</span>
+            <h2>
+              One partner.
+              <br />
+              <span>From idea to launch.</span>
+            </h2>
+          </Reveal>
+          <ChoiceTabs
+            className="capability-tabs"
+            label="Capabilities"
+            prefix="cap-tab"
+            panel="capability-panel"
+            labels={["Websites", "Software", "Automation"]}
+            selected={service}
+            onSelect={setService}
+          />
+          <div
+            className="capability-content"
+            role="tabpanel"
+            id="capability-panel"
+            aria-labelledby={`cap-tab-${service}`}
+          >
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={service}
+                className="capability-copy"
+                initial={reduced ? false : { opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -8 }}
+                transition={{ duration: 0.2 }}
+              >
+                <span className="eyebrow">{capabilities[service].name}</span>
+                <h3>{capabilities[service].title}</h3>
+                <p>{capabilities[service].description}</p>
+                <ul>
+                  {capabilities[service].items.map((x) => (
+                    <li key={x}>
+                      <Check size={16} />
+                      {x}
+                    </li>
+                  ))}
+                </ul>
+                <LinkButton
+                  href="#contact"
+                  onClick={() =>
+                    startBrief(
+                      ["A better website", "Engineering", "AI & automation"][
+                        service
+                      ],
+                      [
+                        "I'd like to improve the experience of our website or digital product.",
+                        "I'd like to discuss the engineering of our product or platform.",
+                        "I'd like to use AI and automation to make our team's work easier.",
+                      ][service],
+                    )
+                  }
+                >
+                  Talk about your project
+                </LinkButton>
+              </motion.div>
+            </AnimatePresence>
+            <div className={`capability-visual visual-${service}`}>
+              <div className="visual-corners" />
+              <AnimatePresence mode="wait" initial={false}>
+                <motion.div
+                  className="capability-demo"
+                  key={service}
+                  initial={reduced ? false : { opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -8 }}
+                  transition={{ duration: reduced ? 0 : 0.3 }}
+                >
+                  {service === 0 ? (
+                    <DesignDemo />
+                  ) : service === 1 ? (
+                    <OperationsDemo />
+                  ) : (
+                    <AssistDemo />
+                  )}
+                </motion.div>
+              </AnimatePresence>
+              <span className="visual-caption">
+                {capabilities[service].label}
+              </span>
+            </div>
+          </div>
+        </section>
+        <TechnologyShowcase />
+        <BusinessVelocity paused={motionPaused} onToggleMotion={() => setMotionPaused((value) => !value)} onRequest={startBrief} />
+        <WhyDwx />
+        <ClientConfidence />
+        <WebsiteReview onRequest={startBrief} />
+        <section className="process-section shell section-pad" id="process">
+          <Reveal className="section-heading heading-inline">
+            <div>
+              <span className="eyebrow">HOW WE WORK</span>
+              <h2>
+                From the first conversation
+                <br />
+                <span>to a working solution.</span>
+              </h2>
+            </div>
+            <p>
+              Understand what happens next, what you receive and where your
+              decisions shape the work.
+            </p>
+          </Reveal>
+          <div className="process-grid">
+            {[
+              [
+                "Understand",
+                "Find the right problem.",
+                "We learn what your customers and team need, then agree on what success looks like.",
+                "A clear brief, scope and priorities.",
+              ],
+              [
+                "Shape",
+                "Make the direction tangible.",
+                "Page layouts, a prototype and a practical plan make the solution tangible before development.",
+                "A prototype and a practical delivery roadmap.",
+              ],
+              [
+                "Build",
+                "Bring the details together.",
+                "You review working versions as we design and develop, so decisions happen while the work takes shape.",
+                "A working release you can review as it develops.",
+              ],
+              [
+                "Evolve",
+                "Learn from the real world.",
+                "We launch, hand over what you need and agree on any ongoing improvements.",
+                "A clear handover and a plan for what comes next.",
+              ],
+            ].map(([title, subtitle, copy, outcome], i) => (
+              <Reveal key={title} className="process-step" delay={i * 0.065}>
+                <span className="process-number">
+                  0{i + 1}
+                  <span className="process-marker" aria-hidden="true" />
+                </span>
+                <h3>{title}</h3>
+                <b>{subtitle}</b>
+                <p>{copy}</p>
+                <div className="process-output">
+                  <span>YOU GET</span>
+                  <p>{outcome}</p>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </section>
+        <section className="faq-section shell section-pad" id="questions">
+          <Reveal className="section-heading">
+            <span className="eyebrow">A FEW USEFUL ANSWERS</span>
+            <h2>
+              Before we
+              <br />
+              <span>get started.</span>
+            </h2>
+            <a className="inline-link" href="mailto:hello@dwx.agency">
+              Ask us something else
+              <ArrowUpRight size={17} />
+            </a>
+          </Reveal>
+          <div className="faq-list">
+            {faqs.map(([question, answer], i) => (
+              <div className="faq-item" key={question}>
+                <button
+                  onClick={() => setFaq(faq === i ? -1 : i)}
+                  aria-expanded={faq === i}
+                  aria-controls={`faq-answer-${i}`}
+                  id={`faq-question-${i}`}
+                >
+                  <span>{question}</span>
+                  <svg
+                    className="faq-symbol"
+                    width="19"
+                    height="19"
+                    viewBox="0 0 19 19"
+                    fill="none"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="M3.5 9.5h12"
+                      stroke="currentColor"
+                      strokeWidth="1.3"
+                      strokeLinecap="round"
+                    />
+                    <motion.path
+                      d="M9.5 3.5v12"
+                      stroke="currentColor"
+                      strokeWidth="1.3"
+                      strokeLinecap="round"
+                      initial={false}
+                      animate={{
+                        opacity: faq === i ? 0 : 1,
+                        scaleY: faq === i ? 0 : 1,
+                      }}
+                      transition={{ duration: reduced ? 0 : 0.25 }}
+                      style={{ transformOrigin: "center" }}
+                    />
+                  </svg>
+                </button>
+                <AnimatePresence initial={false}>
+                  {faq === i && (
+                    <motion.div
+                      id={`faq-answer-${i}`}
+                      role="region"
+                      aria-labelledby={`faq-question-${i}`}
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{
+                        duration: reduced ? 0 : 0.35,
+                        ease: [0.22, 1, 0.36, 1],
+                      }}
+                    >
+                      <p>{answer}</p>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            ))}
+          </div>
+        </section>
+        <motion.section
+          className="contact-banner shell"
+          initial={reduced ? false : { opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: false, amount: 0.15 }}
+          transition={{ duration: 0.75 }}
+        >
+          <div className="banner-grid" />
+          <span className="eyebrow">YOUR BUSINESS HAS A NEXT STEP</span>
+          <h2>
+            More enquiries. Less admin.
+            <br />A better way to do business.
+          </h2>
+          <p>
+            Tell us what you want to improve. We’ll help you decide where to
+            start.
+          </p>
+          <LinkButton href="#contact" secondary>
+            Discuss my business
+          </LinkButton>
+          <div className="banner-footer">
+            <span>Strategy</span>
+            <span>Design</span>
+            <span>Engineering</span>
+            <span>Intelligence</span>
+          </div>
+        </motion.section>
+        <section className="contact-section shell section-pad" id="contact">
+          <Reveal className="contact-copy">
+            <span className="eyebrow">START A CONVERSATION</span>
+            <h2>
+              Let’s talk about
+              <br />
+              <span>your business.</span>
+            </h2>
+            <p>
+              Tell us what you want to improve. We’ll discuss what’s worth
+              building, what it involves and what it could cost.
+            </p>
+            <a className="contact-email" href="mailto:hello@dwx.agency">
+              hello@dwx.agency
+              <ArrowUpRight size={21} />
+            </a>
+            <span className="contact-location">
+              Casablanca, Morocco
+              <br />
+              Open to projects worldwide.
+            </span>
+            <div className="contact-expectations">
+              <b>A conversation, not a commitment.</b>
+              <p>
+                First, we understand your business. Then we agree on the right
+                scope and a proposal. You decide whether to move forward.
+              </p>
+            </div>
+          </Reveal>
+          <Reveal className="contact-form" delay={0.08}>
+            <InquiryForm key={briefRevision} initial={brief} />
+          </Reveal>
+        </section>
+        <footer className="site-footer">
+          <Reveal className="shell footer-main">
+            <div className="footer-brand">
+              <a href="#top" aria-label="Dwx Agency home">
+                <Brand />
+              </a>
+              <p>
+                Websites. Software. Useful automation.
+                <br />
+                Built around your business.
+              </p>
+            </div>
+            <div className="footer-column">
+              <b>Explore</b>
+              <a href="#services">Services</a>
+              <a href="#work">Business solutions</a>
+              <a href="#assistant">Ask Dwx Assist</a>
+              <a href="#technologies">Technologies</a>
+              <a href="#process">Our approach</a>
+              <a href="#about">Why Dwx</a>
+            </div>
+            <div className="footer-column">
+              <b>Build with us</b>
+              <a href="#contact">Discuss my business</a>
+              <a href="#growth">What we can do for you</a>
+              <a href="mailto:hello@dwx.agency">
+                Email the team
+                <ArrowUpRight size={13} />
+              </a>
+            </div>
+            <div className="footer-statement">
+              <span>
+                Independent minds.
+                <br />
+                Connected thinking.
+              </span>
+              <p>
+                Casablanca, Morocco.
+                <br />
+                Working everywhere.
+              </p>
+            </div>
+          </Reveal>
+          <div className="shell footer-bottom">
+            <span>© 2026 Dwx Agency</span>
+            <a href="/privacy">Privacy information</a>
+            <a href="#top">
+              Back to top
+              <ArrowUpRight size={14} />
+            </a>
+          </div>
+          <div className="footer-wordmark shell" aria-hidden="true">
+            dwx<span>®</span>
+          </div>
+        </footer>
+        <div className="growth-dock">
+          <AnimatePresence>
+            {growthOpen && (
+              <motion.aside
+                id="growth-dialog"
+                className="growth-dialog"
+                role="dialog"
+                aria-modal="false"
+                aria-labelledby="growth-dialog-title"
+                initial={
+                  reduced
+                    ? false
+                    : { opacity: 0, y: 18, scale: 0.94, filter: "blur(0px)" }
+                }
+                animate={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
+                exit={{ opacity: 0, y: 14, scale: 0.96, filter: "blur(0px)" }}
+                transition={{ type: "spring", stiffness: 340, damping: 30 }}
+              >
+                <div className="growth-dialog-top">
+                  <span className="eyebrow">A BETTER NEXT MOVE</span>
+                  <button
+                    onClick={() => setGrowthOpen(false)}
+                    aria-label="Close growth guide"
+                  >
+                    <X size={17} />
+                  </button>
+                </div>
+                <h3 id="growth-dialog-title">
+                  Website not converting?
+                  <br />
+                  <span>Let’s find a starting point.</span>
+                </h3>
+                <p>What would make the biggest difference?</p>
+                <div className="growth-dialog-options">
+                  {growthPaths.map((item, i) => (
+                    <button
+                      key={item.label}
+                      aria-pressed={growthPath === i}
+                      onClick={() => setGrowthPath(i)}
+                    >
+                      {item.label}
+                      {growthPath === i ? (
+                        <Check size={14} />
+                      ) : (
+                        <ArrowUpRight size={14} />
+                      )}
+                    </button>
+                  ))}
+                </div>
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    className="growth-dialog-answer"
+                    key={growthPath}
+                    initial={reduced ? false : { opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -6 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <b>{growthPaths[growthPath].headline}</b>
+                    <p>{growthPaths[growthPath].detail}</p>
+                  </motion.div>
+                </AnimatePresence>
+                <LinkButton href="#contact" onClick={startGrowthBrief}>
+                  {growthPaths[growthPath].cta}
+                </LinkButton>
+                <small>Clear scope and cost, agreed before work starts.</small>
+              </motion.aside>
+            )}
+          </AnimatePresence>
+          <AnimatePresence>
+            {(!contactVisible || growthOpen) && (
+              <motion.button
+                ref={growthTrigger}
+                className={`growth-trigger ${growthOpen ? "is-open" : ""}`}
+                onClick={() => setGrowthOpen((value) => !value)}
+                aria-expanded={growthOpen}
+                aria-controls="growth-dialog"
+                initial={reduced ? false : { opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 12 }}
+                whileHover={reduced ? {} : { y: -3 }}
+                whileTap={reduced ? {} : { scale: 0.97 }}
+                transition={{
+                  duration: reduced ? 0 : 0.35,
+                  ease: [0.22, 1, 0.36, 1],
+                }}
+              >
+                <span className="growth-trigger-symbol">
+                  {growthOpen ? <X size={16} /> : <Sparkles size={16} />}
+                </span>
+                <span>
+                  {growthOpen ? "Close guide" : "Website not converting?"}
+                </span>
+                <ArrowUpRight size={15} />
+              </motion.button>
+            )}
+          </AnimatePresence>
+        </div>
+        <AnimatePresence>
+          {!contactVisible && !mobile && (
+            <motion.div
+              className="mobile-project-dock"
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 12 }}
+              transition={{ duration: reduced ? 0 : 0.2 }}
+            >
+              <span>
+                Have a business goal?
+                <small>Let’s work out the next step.</small>
+              </span>
+              <a className="pill" href="#contact">
+                Discuss my project
+                <ArrowUpRight size={17} />
+              </a>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </main>
+    </MotionRuntime>
   );
-}
-
-export default function Home() {
-  return <App />;
 }

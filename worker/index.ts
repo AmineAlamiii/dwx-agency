@@ -1,8 +1,9 @@
 /** Cloudflare Worker entry point for the vinext-starter template. */
 import { handleImageOptimization, DEFAULT_DEVICE_SIZES, DEFAULT_IMAGE_SIZES } from "vinext/server/image-optimization";
 import handler from "vinext/server/app-router-entry";
+import { handleInquiry, handleEvent, type LeadEnvironment } from "./inquiries";
 
-interface Env {
+interface Env extends LeadEnvironment {
   ASSETS: Fetcher;
   DB: D1Database;
   IMAGES: {
@@ -25,9 +26,12 @@ interface ExecutionContext {
 // dangerouslyAllowSVG: true in next.config.js and uncomment below:
 // const imageConfig: ImageConfig = { dangerouslyAllowSVG: true };
 
-const worker = {
+const routes = {
   async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
     const url = new URL(request.url);
+
+    if (url.pathname === "/api/inquiries") return handleInquiry();
+    if (url.pathname === "/api/events") return handleEvent(request, env);
 
     if (url.pathname === "/_vinext/image") {
       const allowedWidths = [...DEFAULT_DEVICE_SIZES, ...DEFAULT_IMAGE_SIZES];
@@ -44,4 +48,17 @@ const worker = {
   },
 };
 
+const worker = {
+  async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
+    const response = await routes.fetch(request, env, ctx);
+    const headers = new Headers(response.headers);
+    headers.set("X-Content-Type-Options", "nosniff");
+    headers.set("X-Frame-Options", "DENY");
+    headers.set("Referrer-Policy", "strict-origin-when-cross-origin");
+    headers.set("Permissions-Policy", "camera=(), microphone=(), geolocation=(), payment=()");
+    headers.set("Content-Security-Policy", "base-uri 'self'; object-src 'none'; frame-ancestors 'none'; form-action 'self'");
+    if (new URL(request.url).protocol === "https:") headers.set("Strict-Transport-Security", "max-age=31536000");
+    return new Response(response.body, {status: response.status, statusText: response.statusText, headers});
+  },
+};
 export default worker;
