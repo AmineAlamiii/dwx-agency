@@ -1,7 +1,8 @@
 "use client";
-/* eslint-disable @next/next/no-img-element -- These local WebP assets are pre-optimized for static Firebase hosting. */
+/* eslint-disable @next/next/no-img-element -- These local WebP assets are pre-optimized for static hosting. */
 import { useState } from "react";
 import { ArrowUpRight, Check, ChevronLeft, ChevronRight, CalendarDays, CarFront, Circle, Clock3, MapPin, Plus, UtensilsCrossed } from "lucide-react";
+import { sitePath } from "../site-path";
 
 export type Industry = "restaurant" | "padel" | "rental";
 export const industryProjects = [
@@ -62,7 +63,7 @@ function RentalDemo() {
       <div className="app-page-title"><div><span className="app-overline">GO SOMEWHERE GOOD</span><h3>Your next journey, sorted.</h3></div><span className="app-avatar"><ArrowUpRight size={16}/></span></div>
       <div className="rental-search"><span><MapPin size={14}/><span>Pick-up location<b>City centre</b></span></span><span><CalendarDays size={14}/><span>Sample rental<b>12 – 15 November</b></span></span></div>
       <div className="vehicle-categories">{["Compact","SUV","Electric"].map((c,i)=><button key={c} aria-pressed={vehicle===i} className={vehicle===i?"selected":""} onClick={()=>{setVehicle(i);setSelected(false);}}>{c}</button>)}</div>
-      <div className="vehicle-stage"><span className="availability-badge"><i/>Available in this demo</span><img className="vehicle-photograph" src={`/images/rental/${["compact","suv","electric"][vehicle]}.webp`} width={900} height={600} alt={`Illustrative ${car.name.toLowerCase()}, studio concept`} loading="lazy" decoding="async" key={vehicle}/></div>
+      <div className="vehicle-stage"><span className="availability-badge"><i/>Available in this demo</span><img className="vehicle-photograph" src={sitePath(`/images/rental/${["compact","suv","electric"][vehicle]}.webp`)} width={900} height={600} alt={`Illustrative ${car.name.toLowerCase()}, studio concept`} loading="lazy" decoding="async" key={vehicle}/></div>
       <div className="vehicle-details"><div><h4>{car.name}</h4><p>{car.type}</p></div><span>{car.range}</span></div>
       <div className="app-bottom-action"><span>{selected ? <><Check size={14}/>Demo request prepared.</> : "Clear choice. Simple booking."}</span><button onClick={()=>setSelected(x=>!x)}>{selected ? "Reset demo" : "Select vehicle"}<ArrowUpRight size={13}/></button></div>
     </div>

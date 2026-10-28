@@ -16,6 +16,7 @@ import {
 } from "./components/conversion-sections";
 import { InquiryForm } from "./components/inquiry-form";
 import { LeadTracking } from "./components/lead-tracking";
+import { privacyPagePath } from "./site-path";
 
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
@@ -959,7 +960,7 @@ export default function Home() {
           </Reveal>
           <div className="shell footer-bottom">
             <span>© 2026 Dwx Agency</span>
-            <a href="/privacy">Privacy information</a>
+            <a href={privacyPagePath()}>Privacy information</a>
             <a href="#top">
               Back to top
               <ArrowUpRight size={14} />

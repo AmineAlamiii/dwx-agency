@@ -7,6 +7,10 @@ const SITE_CREATOR_PLACEHOLDER_DATABASE_ID =
   "00000000-0000-4000-8000-000000000000";
 
 const { d1, r2 } = hostingConfig;
+const pagesBasePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
+const assetBase = pagesBasePath
+  ? `${pagesBasePath.replace(/^\/?/, "/").replace(/\/+$/, "")}/`
+  : undefined;
 
 // macOS Seatbelt blocks FSEvents, so Codex previews need polling for HMR.
 const isCodexSeatbeltSandbox = process.env.CODEX_SANDBOX === "seatbelt";
@@ -44,6 +48,7 @@ export default defineConfig(async () => {
   const { cloudflare } = await import("@cloudflare/vite-plugin");
 
   return {
+    ...(assetBase ? { base: assetBase } : {}),
     server: {
       allowedHosts: [".trycloudflare.com"],
       ...(isCodexSeatbeltSandbox

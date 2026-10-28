@@ -11,8 +11,10 @@ export async function generateMetadata(): Promise<Metadata> {
   const requestHeaders = process.env.DWX_FIREBASE_HOSTING === "1" ? new Headers() : await headers();
   const host = requestHeaders.get("host") ?? "dwx.agency";
   const protocol = requestHeaders.get("x-forwarded-proto") ?? (host.includes("localhost") ? "http" : "https");
-  const base = new URL(process.env.NEXT_PUBLIC_SITE_URL || `${protocol}://${host}`);
-  const socialImage = new URL("/og.png", base).toString();
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || `${protocol}://${host}`;
+  const base = new URL(siteUrl);
+  const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
+  const socialImage = new URL(`${basePath}/og.png`, base.origin).toString();
   return {
     metadataBase: base,
     title: "Dwx Agency | Websites, Software & Business Automation",
@@ -26,7 +28,7 @@ export async function generateMetadata(): Promise<Metadata> {
       images: [{ url: socialImage, width: 1736, height: 907, alt: "Dwx Agency — Digital products that perform." }],
     },
     twitter: { card: "summary_large_image", title: "Dwx Agency — Digital products that perform.", description: "Websites, online stores and software that help businesses attract customers and simplify work.", images: [socialImage] },
-    icons: { icon: "/favicon.svg", shortcut: "/favicon.svg" },
+    icons: { icon: `${basePath}/favicon.svg`, shortcut: `${basePath}/favicon.svg` },
   };
 }
 

@@ -4,6 +4,7 @@ import { useRef, useState, type FormEvent } from "react";
 import { ArrowUpRight, Check, LoaderCircle } from "lucide-react";
 import { trackConversion } from "./lead-tracking";
 import { sendInquiry } from "./firebase-inquiries";
+import { privacyPagePath } from "../site-path";
 
 export type Brief = {
   name: string;
@@ -221,7 +222,7 @@ export function InquiryForm({ initial }: { initial: Brief }) {
       </div>
       <p className="form-privacy">
         We use your details to review and respond to your enquiry.{" "}
-        <a href="/privacy">Privacy information</a>
+        <a href={privacyPagePath()}>Privacy information</a>
         <br />
         Protected by Google reCAPTCHA. Google’s{" "}
         <a href="https://policies.google.com/privacy">Privacy Policy</a> and{" "}

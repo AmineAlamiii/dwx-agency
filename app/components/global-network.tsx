@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useRef } from "react";
+import { sitePath } from "../site-path";
 import { useReducedMotion } from "framer-motion";
 export function GlobeVisual({ paused }: { paused: boolean }) {
   const pausedRef = useRef(paused);
@@ -213,7 +214,7 @@ export function GlobeVisual({ paused }: { paused: boolean }) {
       if (ready && inView && (reduced || pausedRef.current)) draw();
     });
     resize.observe(c);
-    fetch("/data/land.json")
+    fetch(sitePath("/data/land.json"))
       .then((r) => r.json() as Promise<number[][][]>)
       .then((data: number[][][]) => {
         if (!alive) return;

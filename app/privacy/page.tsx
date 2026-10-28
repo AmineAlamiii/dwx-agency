@@ -1,5 +1,5 @@
-import Link from "next/link";
 import type { Metadata } from "next";
+import { sitePath } from "../site-path";
 export const metadata: Metadata = {
   title: "Privacy information | Dwx Agency",
   description:
@@ -8,9 +8,9 @@ export const metadata: Metadata = {
 export default function Privacy() {
   return (
     <main className="privacy-page shell">
-      <Link className="inline-link" href="/">
+      <a className="inline-link" href={sitePath("/")}>
         ← Back to Dwx Agency
-      </Link>
+      </a>
       <span className="eyebrow">PRIVACY INFORMATION</span>
       <h1>
         Your enquiry.
